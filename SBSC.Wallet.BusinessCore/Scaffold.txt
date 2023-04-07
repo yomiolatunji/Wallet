@@ -1,0 +1,1 @@
+﻿Scaffold-DbContext "Server=.\SQLEXPRESS01;Database=Wallet;Trusted_Connection=true; TrustServerCertificate=True; Persist Security Info=False;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir DbModels -f
