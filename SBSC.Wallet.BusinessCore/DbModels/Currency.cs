@@ -11,7 +11,7 @@ public partial class Currency
 
     public string Symbol { get; set; } = null!;
 
-    public bool? IsDeleted { get; set; }
+    public bool IsDeleted { get; set; }
 
     public long CreatedBy { get; set; }
 

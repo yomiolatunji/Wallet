@@ -17,7 +17,7 @@ public partial class User
 
     public string? ProfilePictureUrl { get; set; }
 
-    public bool? IsDeleted { get; set; }
+    public bool IsDeleted { get; set; }
 
     public long CreatedBy { get; set; }
 

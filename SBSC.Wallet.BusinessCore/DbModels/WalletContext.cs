@@ -41,6 +41,9 @@ public partial class WalletContext
             entity.Property(e => e.DateDeleted).HasColumnType("datetime");
             entity.Property(e => e.DateUpdated).HasColumnType("datetime");
             entity.Property(e => e.Email).HasMaxLength(256);
+            entity.Property(e => e.IsActive)
+                .IsRequired()
+                .HasDefaultValueSql("((1))");
             entity.Property(e => e.Name).HasMaxLength(256);
             entity.Property(e => e.Password).HasMaxLength(256);
             entity.Property(e => e.Role).HasMaxLength(20);
@@ -48,7 +51,9 @@ public partial class WalletContext
 
         modelBuilder.Entity<Audit>(entity =>
         {
-            entity.Property(e => e.Date).HasColumnType("datetime");
+            entity.Property(e => e.Date)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime");
             entity.Property(e => e.PrimaryKey).HasMaxLength(100);
             entity.Property(e => e.TableName).HasMaxLength(50);
             entity.Property(e => e.Type).HasMaxLength(50);
@@ -64,9 +69,6 @@ public partial class WalletContext
                 .HasColumnType("datetime");
             entity.Property(e => e.DateDeleted).HasColumnType("datetime");
             entity.Property(e => e.DateUpdated).HasColumnType("datetime");
-            entity.Property(e => e.IsDeleted)
-                .IsRequired()
-                .HasDefaultValueSql("((1))");
             entity.Property(e => e.Name).HasMaxLength(50);
             entity.Property(e => e.Symbol).HasMaxLength(10);
         });
@@ -77,6 +79,8 @@ public partial class WalletContext
 
             entity.Property(e => e.Amount).HasColumnType("decimal(18, 2)");
             entity.Property(e => e.Currency).HasMaxLength(3);
+            entity.Property(e => e.Narration).HasMaxLength(256);
+            entity.Property(e => e.TransactionCode).HasMaxLength(10);
             entity.Property(e => e.TransactionDate).HasDefaultValueSql("(getdate())");
             entity.Property(e => e.TransactionType)
                 .HasMaxLength(1)
@@ -102,9 +106,6 @@ public partial class WalletContext
             entity.Property(e => e.DateUpdated).HasColumnType("datetime");
             entity.Property(e => e.Email).HasMaxLength(256);
             entity.Property(e => e.FirstName).HasMaxLength(50);
-            entity.Property(e => e.IsDeleted)
-                .IsRequired()
-                .HasDefaultValueSql("((1))");
             entity.Property(e => e.LastName).HasMaxLength(50);
             entity.Property(e => e.Password).HasMaxLength(256);
             entity.Property(e => e.ProfilePictureUrl).HasMaxLength(256);

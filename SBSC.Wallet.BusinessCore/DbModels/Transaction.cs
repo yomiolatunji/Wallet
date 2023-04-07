@@ -17,5 +17,9 @@ public partial class Transaction
 
     public DateTime TransactionDate { get; set; }
 
+    public string? Narration { get; set; }
+
+    public string? TransactionCode { get; set; }
+
     public virtual User User { get; set; } = null!;
 }
