@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
+using SBSC.Wallet.BusinessCore.DbModels;
 
 namespace SBSC.Wallet.BusinessCore
 {
@@ -11,6 +7,8 @@ namespace SBSC.Wallet.BusinessCore
     {
         public static IServiceCollection AddCoreService(this IServiceCollection services)
         {
+            services.AddDbContext<WalletContext>();
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             return services;
         }
     }
