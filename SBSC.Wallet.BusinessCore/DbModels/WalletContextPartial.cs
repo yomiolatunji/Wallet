@@ -90,11 +90,10 @@ public partial class WalletContext: IdentityDbContext
     {
         base.OnModelCreating(modelBuilder);
 
-        //modelBuilder.Entity<Person>().HasQueryFilter(x => !x.IsDeleted);
-        //modelBuilder.Entity<SendMessageLog>().HasQueryFilter(x => !x.IsDeleted);
-        //modelBuilder.Entity<MessageBatchLog>().HasQueryFilter(x => !x.IsDeleted);
-        //modelBuilder.Entity<MessageBatchDetailLog>().HasQueryFilter(x => !x.IsDeleted);
-        //modelBuilder.Entity<Group>().HasQueryFilter(x => !x.IsDeleted);
+        modelBuilder.Entity<User>().HasQueryFilter(x => !x.IsDeleted);
+        modelBuilder.Entity<Wallet>().HasQueryFilter(x => !x.IsDeleted);
+        modelBuilder.Entity<Admin>().HasQueryFilter(x => !x.IsDeleted);
+        modelBuilder.Entity<Currency>().HasQueryFilter(x => !x.IsDeleted);
     }
 
 }
