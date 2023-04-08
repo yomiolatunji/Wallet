@@ -35,7 +35,7 @@ namespace SBSC.Wallet.BusinessCore.Services
             walletRequest.DateCreated = DateTime.Now;
             walletRequest.CreatedBy = 0;
             walletRequest.IsDeleted = false;
-            //TODO: Generate WalletNumber
+            walletRequest.WalletNumber = GetNextWalletNumber();
 
             await _context.Wallets.AddAsync(walletRequest);
             var inserted = (await _context.SaveChangesAsync()) > 0;
@@ -58,7 +58,7 @@ namespace SBSC.Wallet.BusinessCore.Services
                 throw new ArgumentNullException(nameof(request));
             }
 
-            var collection = _context.Wallets.Include(a=>a.User) as IQueryable<DbModels.Wallet>;
+            var collection = _context.Wallets.Include(a => a.User) as IQueryable<DbModels.Wallet>;
             if (!string.IsNullOrWhiteSpace(request.SearchQuery))
             {
                 var searchQuery = request.SearchQuery.Trim();
@@ -90,15 +90,31 @@ namespace SBSC.Wallet.BusinessCore.Services
 
         public async Task<IEnumerable<WalletDto>> GetWalletByUser(long userId)
         {
-            if (userId <=0)
+            if (userId <= 0)
             {
                 throw new ArgumentNullException(nameof(userId));
             }
 
-            var wallets = await _context.Wallets.Where(a=>a.UserId==userId).ToListAsync();
-            
+            var wallets = await _context.Wallets.Where(a => a.UserId == userId).ToListAsync();
+
             return _mapper.Map<IEnumerable<WalletDto>>(wallets);
         }
+        public string GetNextWalletNumber()
+        {
 
+            string seqQuence;
+            var connection = _context.Database.GetDbConnection();
+            connection.Open();
+            using (var cmd = connection.CreateCommand())
+            {
+                cmd.CommandText = "Select NEXT VALUE FOR dbo.[SeqWalletNumber]";
+                var obj = cmd.ExecuteScalar();
+                seqQuence = obj.ToString()?.PadLeft(10);
+
+            }
+            connection.Close();
+            return seqQuence;
+
+        }
     }
 }
