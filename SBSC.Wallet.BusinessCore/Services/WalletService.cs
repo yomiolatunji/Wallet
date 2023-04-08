@@ -51,7 +51,7 @@ namespace SBSC.Wallet.BusinessCore.Services
             throw new NotImplementedException();
         }
 
-        public PagedList<WalletDto> GetWallet(PagedRequest request)
+        public PagedList<WalletDto> GetWallets(PagedRequest request)
         {
             if (request == null)
             {
@@ -114,7 +114,6 @@ namespace SBSC.Wallet.BusinessCore.Services
             }
             connection.Close();
             return seqQuence;
-
         }
     }
 }

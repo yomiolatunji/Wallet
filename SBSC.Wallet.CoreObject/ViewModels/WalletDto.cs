@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace SBSC.Wallet.CoreObject.ViewModels
+﻿namespace SBSC.Wallet.CoreObject.ViewModels
 {
     public class WalletDto
     {
@@ -16,24 +14,6 @@ namespace SBSC.Wallet.CoreObject.ViewModels
         public bool? DebitRestricted { get; set; }
         public bool? CreditRestricted { get; set; }
         public bool? IsActive { get; set; }
-        public virtual UserDto User { get; set; } = null!;
-    }
-    public class AddWalletRequest
-    {
-        [Required]
-        public long UserId { get; set; }
-        [Required]
-        public string Currency { get; set; }
-        public virtual UserDto User { get; set; } = null!;
-    }
-    public class EditWalletRequest
-    {
-        [Required]
-        public long Id { get; set; }
-        [Required]
-        public long UserId { get; set; }
-        [Required]
-        public string Currency { get; set; }
         public virtual UserDto User { get; set; } = null!;
     }
 }

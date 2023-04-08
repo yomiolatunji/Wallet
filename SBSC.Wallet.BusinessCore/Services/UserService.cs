@@ -14,12 +14,14 @@ namespace SBSC.Wallet.BusinessCore.Services
         private readonly WalletContext _context;
         private readonly IMapper _mapper;
         private readonly IPasswordService _passwordService;
+        private readonly IWalletService _walletService;
 
-        public UserService(WalletContext context, IMapper mapper, IPasswordService passwordService, IConfiguration configuration) : base(configuration)
+        public UserService(WalletContext context, IMapper mapper, IPasswordService passwordService,IWalletService walletService, IConfiguration configuration) : base(configuration)
         {
             _context = context;
             _mapper = mapper;
             _passwordService = passwordService;
+            _walletService = walletService;
         }
 
         public async Task<(bool status, string message)> Add(AddUserRequest request)
@@ -39,9 +41,24 @@ namespace SBSC.Wallet.BusinessCore.Services
             var inserted = (await _context.SaveChangesAsync()) > 0;
             if (inserted)
             {
+                await CreateDefaultWallets(userRequest.Id);
                 return (true, ResponseCodes.Success.message);
             }
             return (false, ResponseCodes.Failed.message);
+        }
+
+        private async Task CreateDefaultWallets(long userId)
+        {
+            var defaultCurrencies=GetAppSetting("DefaultWalletCurrency");
+            foreach (var currency in defaultCurrencies.Split(","))
+            {
+                var walletRequest = new AddWalletRequest
+                {
+                    Currency = currency,
+                    UserId = userId
+                };
+                await _walletService.CreateWallet(walletRequest);
+            }
         }
 
         public async Task<(bool status, string message)> ChangePassword(ChangePasswordRequest request)

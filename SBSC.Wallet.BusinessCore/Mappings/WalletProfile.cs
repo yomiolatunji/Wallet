@@ -11,8 +11,6 @@ namespace SBSC.Wallet.BusinessCore.Mappings
                 .ReverseMap();
             CreateMap<AddWalletRequest, DbModels.Wallet>()
                 .ReverseMap();
-            CreateMap<EditWalletRequest, DbModels.Wallet>()
-                .ReverseMap();
         }
     }
 }

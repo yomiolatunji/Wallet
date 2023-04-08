@@ -13,6 +13,6 @@ namespace SBSC.Wallet.BusinessCore.Services.Interfaces
         public Task<(bool status, string message)> DeleteWallet(long id);
         public Task<IEnumerable<WalletDto>> GetWalletByUser(long userId);
         public Task<WalletDto> GetWalletById(long id);
-        public PagedList<WalletDto> GetWallet(PagedRequest request);
+        public PagedList<WalletDto> GetWallets(PagedRequest request);
     }
 }
