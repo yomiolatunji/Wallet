@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using SBSC.Wallet.BusinessCore.DbModels;
+using SBSC.Wallet.BusinessCore.Services;
+using SBSC.Wallet.BusinessCore.Services.Interfaces;
 
 namespace SBSC.Wallet.BusinessCore
 {
@@ -9,6 +11,9 @@ namespace SBSC.Wallet.BusinessCore
         {
             services.AddDbContext<WalletContext>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IPasswordService, PasswordService>();
+
             return services;
         }
     }

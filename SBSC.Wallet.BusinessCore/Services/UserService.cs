@@ -1,16 +1,11 @@
 ﻿using AutoMapper;
+using Azure.Core;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using Microsoft.Extensions.Configuration;
 using SBSC.Wallet.BusinessCore.DbModels;
 using SBSC.Wallet.BusinessCore.Services.Interfaces;
 using SBSC.Wallet.CoreObject.Enumerables;
 using SBSC.Wallet.CoreObject.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SBSC.Wallet.BusinessCore.Services
 {
@@ -18,11 +13,13 @@ namespace SBSC.Wallet.BusinessCore.Services
     {
         private readonly WalletContext _context;
         private readonly IMapper _mapper;
+        private readonly IPasswordService _passwordService;
 
-        public UserService(WalletContext context, IMapper mapper, IConfiguration configuration) : base(configuration)
+        public UserService(WalletContext context, IMapper mapper, IPasswordService passwordService, IConfiguration configuration) : base(configuration)
         {
             _context = context;
             _mapper = mapper;
+            _passwordService = passwordService;
         }
 
         public async Task<(bool status, string message)> Add(AddUserRequest request)
@@ -35,11 +32,38 @@ namespace SBSC.Wallet.BusinessCore.Services
             userRequest.DateCreated = DateTime.Now;
             //userRequest.CreatedBy = username;
             userRequest.IsDeleted = false;
+            userRequest.Password = _passwordService.HashPassword(request.Password);
             //TODO: Save profilepicture
 
             await _context.Users.AddAsync(userRequest);
-            var inserted= (await _context.SaveChangesAsync()) > 0;
-            if(inserted)
+            var inserted = (await _context.SaveChangesAsync()) > 0;
+            if (inserted)
+            {
+                return (true, ResponseCodes.Success.message);
+            }
+            return (false, ResponseCodes.Failed.message);
+        }
+
+        public async Task<(bool status, string message)> ChangePassword(ChangePasswordRequest request)
+        {
+            if (request == null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+            var user = await _context.Users.FirstOrDefaultAsync(a => a.Email == request.Email);
+            if (user == null)
+            {
+                return (false, ResponseCodes.NotFound.message);
+            }
+            var validPassword = _passwordService.VerifyPassword(request.OldPassword, user.Password);
+            if (!validPassword)
+            {
+                return (false, "Invalid Email/Password");
+            }
+            user.Password = _passwordService.HashPassword(request.NewPassword);
+            user.DateUpdated = DateTime.Now;
+            var updated = (await _context.SaveChangesAsync()) > 0;
+            if (updated)
             {
                 return (true, ResponseCodes.Success.message);
             }
@@ -52,8 +76,8 @@ namespace SBSC.Wallet.BusinessCore.Services
             {
                 throw new ArgumentNullException(nameof(request));
             }
-            var user= await _context.Users.FirstOrDefaultAsync(a=>a.Id==request.Id);
-            if(user == null)
+            var user = await _context.Users.FirstOrDefaultAsync(a => a.Id == request.Id);
+            if (user == null)
             {
                 return (false, ResponseCodes.NotFound.message);
             }
@@ -65,6 +89,7 @@ namespace SBSC.Wallet.BusinessCore.Services
             {
                 user.LastName = request.LastName;
             }
+            user.DateUpdated = DateTime.Now;
             //TODO: Save profilepicture
 
             var updated = (await _context.SaveChangesAsync()) > 0;
@@ -73,6 +98,16 @@ namespace SBSC.Wallet.BusinessCore.Services
                 return (true, ResponseCodes.Success.message);
             }
             return (false, ResponseCodes.Failed.message);
+        }
+
+        public UserDto GetUserById(long id)
+        {
+            if (id <= 0)
+            {
+                throw new ArgumentNullException(nameof(id));
+            }
+            var user = _context.Users.FirstOrDefault(a => a.Id == id);
+            return _mapper.Map<UserDto>(user);
         }
 
         public PagedList<UserDto> GetUsers(PagedRequest request)
@@ -97,6 +132,21 @@ namespace SBSC.Wallet.BusinessCore.Services
                 request.SortDirection);
 
             return _mapper.Map<PagedList<UserDto>>(users);
+        }
+
+        public async Task<(bool status, UserDto? user)> Login(LoginRequest request)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(a => a.Email == request.Email);
+            if (user == null)
+            {
+                return (false, null);
+            }
+            var validPassword = _passwordService.VerifyPassword(request.Password, user.Password);
+            if (!validPassword)
+            {
+                return (false, null);
+            }
+            return (true, _mapper.Map<UserDto>(user));
         }
     }
 }
