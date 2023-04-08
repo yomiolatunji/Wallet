@@ -30,7 +30,7 @@ namespace SBSC.Wallet.BusinessCore.Services
             }
             var userRequest = _mapper.Map<AddUserRequest, User>(request);
             userRequest.DateCreated = DateTime.Now;
-            //userRequest.CreatedBy = username;
+            userRequest.CreatedBy = 0;
             userRequest.IsDeleted = false;
             userRequest.Password = _passwordService.HashPassword(request.Password);
             //TODO: Save profilepicture

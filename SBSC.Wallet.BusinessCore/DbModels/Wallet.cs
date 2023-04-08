@@ -9,6 +9,8 @@ public partial class Wallet
 
     public long UserId { get; set; }
 
+    public string WalletNumber { get; set; } = null!;
+
     public string Currency { get; set; } = null!;
 
     public decimal AcyBalance { get; set; }

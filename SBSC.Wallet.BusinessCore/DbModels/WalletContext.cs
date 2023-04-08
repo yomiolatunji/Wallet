@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace SBSC.Wallet.BusinessCore.DbModels;
 
-public partial class WalletContext
+public partial class WalletContext 
 {
     public WalletContext()
     {
@@ -64,6 +64,7 @@ public partial class WalletContext
         {
             entity.HasKey(e => e.Id).HasName("PK__currenci__3214EC07E7B83AAA");
 
+            entity.Property(e => e.CurrencyLogoUrl).HasMaxLength(256);
             entity.Property(e => e.DateCreated)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
@@ -135,12 +136,16 @@ public partial class WalletContext
                 .HasDefaultValueSql("((1))");
             entity.Property(e => e.LcyBalance).HasColumnType("decimal(18, 2)");
             entity.Property(e => e.LienAmount).HasColumnType("decimal(18, 2)");
+            entity.Property(e => e.WalletNumber).HasMaxLength(10);
 
             entity.HasOne(d => d.User).WithMany(p => p.Wallets)
                 .HasForeignKey(d => d.UserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Wallets__UserId__44FF419A");
         });
+        modelBuilder.HasSequence("SeqWalletNumber")
+            .StartsAt(10000L)
+            .HasMax(9999999999L);
 
         OnModelCreatingPartial(modelBuilder);
     }
