@@ -46,9 +46,26 @@ namespace SBSC.Wallet.BusinessCore.Services
             return (false, ResponseCodes.Failed.message);
         }
 
-        public Task<(bool status, string message)> DeleteWallet(long id)
+        public async Task<(bool status, string message)> DeleteWallet(long id)
         {
-            throw new NotImplementedException();
+            if (id <= 0)
+            {
+                throw new ArgumentNullException(nameof(id));
+            }
+
+            var wallet = await _context.Wallets.FirstOrDefaultAsync(a => a.Id == id);
+            if (wallet == null)
+            {
+                return (false, ResponseCodes.NotFound.message);
+            }
+            wallet.IsDeleted = true;
+            wallet.DateDeleted = DateTime.Now;
+            var updated = (await _context.SaveChangesAsync()) > 0;
+            if (updated)
+            {
+                return (true, ResponseCodes.Success.message);
+            }
+            return (false, ResponseCodes.Failed.message);
         }
 
         public PagedList<WalletDto> GetWallets(PagedRequest request)
@@ -109,11 +126,100 @@ namespace SBSC.Wallet.BusinessCore.Services
             {
                 cmd.CommandText = "Select NEXT VALUE FOR dbo.[SeqWalletNumber]";
                 var obj = cmd.ExecuteScalar();
-                seqQuence = obj.ToString()?.PadLeft(10);
+                seqQuence = obj.ToString()?.PadLeft(10,'0');
 
             }
             connection.Close();
             return seqQuence;
+        }
+
+        public async Task<(bool status, string message)> DisableWallet(long id)
+        {
+            if (id <= 0)
+            {
+                throw new ArgumentNullException(nameof(id));
+            }
+
+            var wallet = await _context.Wallets.FirstOrDefaultAsync(a => a.Id == id);
+            if (wallet == null)
+            {
+                return (false, ResponseCodes.NotFound.message);
+            }
+            wallet.IsActive=false;
+            wallet.DateUpdated=DateTime.Now;
+            var updated = (await _context.SaveChangesAsync()) > 0;
+            if (updated)
+            {
+                return (true, ResponseCodes.Success.message);
+            }
+            return (false, ResponseCodes.Failed.message);
+        }
+
+        public async Task<(bool status, string message)> RestrictWalletCredit(long id)
+        {
+            if (id <= 0)
+            {
+                throw new ArgumentNullException(nameof(id));
+            }
+
+            var wallet = await _context.Wallets.FirstOrDefaultAsync(a => a.Id == id);
+            if (wallet == null)
+            {
+                return (false, ResponseCodes.NotFound.message);
+            }
+            wallet.CreditRestricted = true;
+            wallet.DateUpdated = DateTime.Now;
+            var updated = (await _context.SaveChangesAsync()) > 0;
+            if (updated)
+            {
+                return (true, ResponseCodes.Success.message);
+            }
+            return (false, ResponseCodes.Failed.message);
+        }
+
+        public async Task<(bool status, string message)> RestrictWalletDebit(long id)
+        {
+            if (id <= 0)
+            {
+                throw new ArgumentNullException(nameof(id));
+            }
+
+            var wallet = await _context.Wallets.FirstOrDefaultAsync(a => a.Id == id);
+            if (wallet == null)
+            {
+                return (false, ResponseCodes.NotFound.message);
+            }
+            wallet.DebitRestricted = true;
+            wallet.DateUpdated = DateTime.Now;
+            var updated = (await _context.SaveChangesAsync()) > 0;
+            if (updated)
+            {
+                return (true, ResponseCodes.Success.message);
+            }
+            return (false, ResponseCodes.Failed.message);
+        }
+
+        public async Task<(bool status, string message)> EnableWallet(long id)
+        {
+            if (id <= 0)
+            {
+                throw new ArgumentNullException(nameof(id));
+            }
+
+            var wallet = await _context.Wallets.FirstOrDefaultAsync(a => a.Id == id);
+            if (wallet == null)
+            {
+                return (false, ResponseCodes.NotFound.message);
+            }
+            wallet.IsActive = true;
+            wallet.DateUpdated = DateTime.Now;
+            var updated = (await _context.SaveChangesAsync()) > 0;
+            if (updated)
+            {
+                return (true, ResponseCodes.Success.message);
+            }
+            return (false, ResponseCodes.Failed.message);
+            throw new NotImplementedException();
         }
     }
 }

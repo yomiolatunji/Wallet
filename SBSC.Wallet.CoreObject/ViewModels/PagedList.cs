@@ -50,16 +50,19 @@ namespace SBSC.Wallet.CoreObject.ViewModels
         {
             if (!string.IsNullOrWhiteSpace(sortColumn))
             {
-                var column = typeof(T).GetProperty(sortColumn).GetType();
-                    
-                if (!string.IsNullOrEmpty(sortDirection) && sortDirection.ToLower() == "desc")
+                var column = typeof(T).GetProperty(sortColumn)?.GetType();
+                if (column != null)
                 {
-                    source = source.OrderByDescending(x => column);
+                    if (!string.IsNullOrEmpty(sortDirection) && sortDirection.ToLower() == "desc")
+                    {
+                        source = source.OrderByDescending(x => column);
+                    }
+                    else
+                    {
+                        source = source.OrderBy(x => column);
+                    }
                 }
-                else
-                {
-                    source = source.OrderBy(x => column);
-                }
+
             }
             var count = source.Count();
             var items = source.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();

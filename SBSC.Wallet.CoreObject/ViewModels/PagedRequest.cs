@@ -10,9 +10,9 @@ namespace SBSC.Wallet.CoreObject.ViewModels
     {
         private const int maxPageSize = 50;
         private const int minPageNumber = 1;
-        public string SearchQuery { get; set; }
-        public string SortColumn { get; set; }
-        public string SortDirection { get; set; }
+        public string? SearchQuery { get; set; }
+        public string? SortColumn { get; set; }
+        public string? SortDirection { get; set; }
 
         private int _pageNumber = 1;
 

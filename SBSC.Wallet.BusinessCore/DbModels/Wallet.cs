@@ -43,5 +43,7 @@ public partial class Wallet
 
     public DateTime? DateDeleted { get; set; }
 
+    public virtual ICollection<Transaction> Transactions { get; } = new List<Transaction>();
+
     public virtual User User { get; set; } = null!;
 }

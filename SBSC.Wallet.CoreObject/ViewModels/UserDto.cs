@@ -15,6 +15,7 @@ namespace SBSC.Wallet.CoreObject.ViewModels
         public string FirstName { get; set; } = null!;
 
         public string LastName { get; set; } = null!;
+        public string FullName { get; set; } = null!;
 
         public string? ProfilePictureUrl { get; set; }
         public byte[]? ProfilePicture { get; set; }

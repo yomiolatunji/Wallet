@@ -22,7 +22,7 @@ namespace SBSC.Wallet.WebApi.Controllers
         }
         [HttpGet(Name = "GetWallets")]
         [ProducesResponseType(typeof(PagedApiResponse<WalletDto>), StatusCodes.Status200OK)]
-        public ActionResult<PagedApiResponse<WalletDto>> Get(PagedRequest request)
+        public ActionResult<PagedApiResponse<WalletDto>> Get([FromQuery]PagedRequest request)
         {
             var wallets = _walletService.GetWallets(request);
             PagedApiResponse<WalletDto> response;

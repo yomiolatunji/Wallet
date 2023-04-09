@@ -2,10 +2,15 @@
 using Azure.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 using SBSC.Wallet.BusinessCore.DbModels;
 using SBSC.Wallet.BusinessCore.Services.Interfaces;
 using SBSC.Wallet.CoreObject.Enumerables;
 using SBSC.Wallet.CoreObject.ViewModels;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace SBSC.Wallet.BusinessCore.Services
 {
@@ -16,7 +21,7 @@ namespace SBSC.Wallet.BusinessCore.Services
         private readonly IPasswordService _passwordService;
         private readonly IWalletService _walletService;
 
-        public UserService(WalletContext context, IMapper mapper, IPasswordService passwordService,IWalletService walletService, IConfiguration configuration) : base(configuration)
+        public UserService(WalletContext context, IMapper mapper, IPasswordService passwordService, IWalletService walletService, IConfiguration configuration) : base(configuration)
         {
             _context = context;
             _mapper = mapper;
@@ -49,7 +54,7 @@ namespace SBSC.Wallet.BusinessCore.Services
 
         private async Task CreateDefaultWallets(long userId)
         {
-            var defaultCurrencies=GetAppSetting("DefaultWalletCurrency");
+            var defaultCurrencies = GetAppSetting("DefaultWalletCurrency");
             foreach (var currency in defaultCurrencies.Split(","))
             {
                 var walletRequest = new AddWalletRequest
@@ -151,7 +156,7 @@ namespace SBSC.Wallet.BusinessCore.Services
             return _mapper.Map<PagedList<UserDto>>(users);
         }
 
-        public async Task<(bool status, UserDto? user)> Login(LoginRequest request)
+        public async Task<(bool status, string? token)> Login(LoginRequest request)
         {
             var user = await _context.Users.FirstOrDefaultAsync(a => a.Email == request.Email);
             if (user == null)
@@ -163,7 +168,48 @@ namespace SBSC.Wallet.BusinessCore.Services
             {
                 return (false, null);
             }
-            return (true, _mapper.Map<UserDto>(user));
+            var token = GenerateToken(_mapper.Map<UserDto>(user), "USER");
+            return (true, token);
+        }
+        public async Task<(bool status, string? token)> AdminLogin(LoginRequest request)
+        {
+            var admin = await _context.Admins.FirstOrDefaultAsync(a => a.Email == request.Email);
+            if (admin == null)
+            {
+                return (false, null);
+            }
+            var validPassword = _passwordService.VerifyPassword(request.Password, admin.Password);
+            if (!validPassword)
+            {
+                return (false, null);
+            }
+            var token = GenerateToken(_mapper.Map<UserDto>(admin), "ADMIN");
+            return (true, token);
+        }
+        private string GenerateToken(UserDto user, string role)
+        {
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(GetAppSetting("Jwt:SecretKey")));
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+
+            var claims = new List<Claim>()
+            {
+                new Claim("Email", user.Email),
+                new Claim("UserId", user.Id.ToString()),
+                new Claim("FirstName", user.FirstName),
+                new Claim("FullName", user.FullName ),
+                new Claim("Role", role),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+            };
+
+
+            var token = new JwtSecurityToken(
+                issuer: GetAppSetting("Jwt:Issuer"),
+                audience: GetAppSetting("Jwt:Audience"),
+                claims: claims.ToArray(),
+                expires: DateTime.Now.AddMinutes(Convert.ToInt32(GetAppSetting("Jwt:TokenTimeout"))),
+                signingCredentials: credentials
+            );
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }
 }

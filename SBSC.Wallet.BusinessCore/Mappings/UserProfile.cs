@@ -14,7 +14,8 @@ namespace SBSC.Wallet.BusinessCore.Mappings
         public UserProfile() {
             CreateMap<AddUserRequest, User>()
                 .ReverseMap();
-            CreateMap<UserDto, User>() 
+            CreateMap<User, UserDto>()
+                .ForMember(src => src.FullName, dest => dest.MapFrom(a => $"{a.FirstName} {a.LastName}"))
                 .ReverseMap();
             CreateMap<EditUserRequest, User>() 
                 .ReverseMap();

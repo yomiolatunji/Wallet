@@ -21,5 +21,9 @@ public partial class Transaction
 
     public string? TransactionCode { get; set; }
 
+    public long WalletId { get; set; }
+
     public virtual User User { get; set; } = null!;
+
+    public virtual Wallet Wallet { get; set; } = null!;
 }

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace SBSC.Wallet.BusinessCore.DbModels;
 
-public partial class WalletContext 
+public partial class WalletContext
 {
     public WalletContext()
     {
@@ -26,6 +26,7 @@ public partial class WalletContext
     public virtual DbSet<User> Users { get; set; }
 
     public virtual DbSet<Wallet> Wallets { get; set; }
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -92,6 +93,11 @@ public partial class WalletContext
                 .HasForeignKey(d => d.UserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Transacti__UserI__3F466844");
+
+            entity.HasOne(d => d.Wallet).WithMany(p => p.Transactions)
+                .HasForeignKey(d => d.WalletId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Transactions_Wallets");
         });
 
         modelBuilder.Entity<User>(entity =>

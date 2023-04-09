@@ -13,6 +13,7 @@ namespace SBSC.Wallet.BusinessCore
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IPasswordService, PasswordService>();
+            services.AddScoped<IWalletService, WalletService>();
 
             return services;
         }

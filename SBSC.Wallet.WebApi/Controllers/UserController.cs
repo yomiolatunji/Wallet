@@ -19,7 +19,7 @@ namespace SBSC.Wallet.WebApi.Controllers
 
         [HttpGet(Name = "GetUsers")]
         [ProducesResponseType(typeof(PagedApiResponse<UserDto>), StatusCodes.Status200OK)]
-        public ActionResult<PagedApiResponse<UserDto>> Get(PagedRequest request)
+        public ActionResult<PagedApiResponse<UserDto>> Get([FromQuery]PagedRequest request)
         {
             var users = _userService.GetUsers(request);
             PagedApiResponse<UserDto> response;
