@@ -23,6 +23,8 @@ public partial class WalletContext
 
     public virtual DbSet<InterestPayable> InterestPayables { get; set; }
 
+    public virtual DbSet<Notification> Notifications { get; set; }
+
     public virtual DbSet<Transaction> Transactions { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
@@ -84,6 +86,16 @@ public partial class WalletContext
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
             entity.Property(e => e.ValueDate).HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<Notification>(entity =>
+        {
+            entity.Property(e => e.DateCreated).HasColumnType("datetime");
+            entity.Property(e => e.DateDeleted).HasColumnType("datetime");
+            entity.Property(e => e.DateRead).HasColumnType("datetime");
+            entity.Property(e => e.Message).HasColumnType("text");
+            entity.Property(e => e.Subject).HasMaxLength(256);
+            entity.Property(e => e.UserType).HasMaxLength(10);
         });
 
         modelBuilder.Entity<Transaction>(entity =>
@@ -167,5 +179,5 @@ public partial class WalletContext
         OnModelCreatingPartial(modelBuilder);
     }
 
-    private partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+    partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 }

@@ -1,6 +1,7 @@
 ﻿using Hangfire;
 using Microsoft.Extensions.DependencyInjection;
 using SBSC.Wallet.BusinessCore.DbModels;
+using SBSC.Wallet.CoreObject.Enumerables;
 
 namespace SBSC.Wallet.BusinessCore.Services
 {
@@ -34,7 +35,7 @@ namespace SBSC.Wallet.BusinessCore.Services
                                 Currency = wallet.Currency,
                                 WalletId = wallet.Id,
                                 ValueDate = DateTime.Today.AddDays(-1),
-                                RunDate= DateTime.Now
+                                RunDate = DateTime.Now
                             };
                             context.InterestPayables.Add(interestPayable);
                             context.SaveChanges();
@@ -51,6 +52,23 @@ namespace SBSC.Wallet.BusinessCore.Services
                         }
                     }
                 }
+                var admins = context.Admins.Where(a => a.Role == UserRoles.Admin).ToList();
+                foreach (var admin in admins)
+                {
+                    var notification = new Notification
+                    {
+                        DateCreated = DateTime.Now,
+                        IsDeleted = false,
+                        IsRead = false,
+                        Message = $@"Dear {admin.Name}<br/>
+The interest accrual job has successfully run for the {DateTime.Today.AddDays(-1):dd-MMM-yyyy}",
+                        Subject = "Interest accrual completed",
+                        UserId = admin.Id,
+                        UserType = UserRoles.Admin
+                    };
+                    context.Notifications.Add(notification);
+                }
+                context.SaveChanges();
             }
         }
         public static void PayInterest(IServiceProvider serviceProvider)
@@ -89,7 +107,7 @@ namespace SBSC.Wallet.BusinessCore.Services
                                 Currency = wallet.Currency,
                                 WalletId = wallet.Id,
                                 ValueDate = DateTime.Today.AddDays(-1),
-                                RunDate=DateTime.Now
+                                RunDate = DateTime.Now
                             };
                             context.InterestPayables.Add(interestPayable);
                             context.SaveChanges();
@@ -99,7 +117,7 @@ namespace SBSC.Wallet.BusinessCore.Services
                                 Amount = transaction.Amount,
                                 Currency = wallet.Currency,
                                 WalletId = wallet.Id,
-                                Narration = $"Interest for the month {month.ToString("MMM - yyyy")}",
+                                Narration = $"Interest for the month {month:MMM - yyyy}",
                                 TransactionCode = "INT",
                                 TransactionType = "D",
                                 TransactionDate = DateTime.Now
@@ -115,6 +133,23 @@ namespace SBSC.Wallet.BusinessCore.Services
                         }
                     }
                 }
+                var admins = context.Admins.Where(a => a.Role == UserRoles.Admin).ToList();
+                foreach (var admin in admins)
+                {
+                    var notification = new Notification
+                    {
+                        DateCreated = DateTime.Now,
+                        IsDeleted = false,
+                        IsRead = false,
+                        Message = $@"Dear {admin.Name}<br/>
+The interest payment for {month:MMM - yyyy} completed",
+                        Subject = "Interest payment completed",
+                        UserId = admin.Id,
+                        UserType = UserRoles.Admin
+                    };
+                    context.Notifications.Add(notification);
+                }
+                context.SaveChanges();
             }
         }
     }
