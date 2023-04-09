@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace SBSC.Wallet.BusinessCore.DbModels;
+﻿namespace SBSC.Wallet.BusinessCore.DbModels;
 
 public partial class Wallet
 {

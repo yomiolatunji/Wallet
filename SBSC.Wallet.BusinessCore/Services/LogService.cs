@@ -8,7 +8,7 @@ namespace SBSC.Wallet.BusinessCore.Services
     {
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        public static void LogInfo(string message,  [CallerMemberName] string memberName = "", [CallerFilePath] string fileName = "", [CallerLineNumber] int lineNumber = 0)
+        public static void LogInfo(string message, [CallerMemberName] string memberName = "", [CallerFilePath] string fileName = "", [CallerLineNumber] int lineNumber = 0)
         {
             log.Error($"\r\n Executing Operation: {fileName} Method Name: {memberName}  Line Number: {lineNumber} \r\nMessage: {message}\r\n");
         }

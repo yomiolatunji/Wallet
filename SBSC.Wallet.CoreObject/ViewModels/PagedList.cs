@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SBSC.Wallet.CoreObject.ViewModels
+﻿namespace SBSC.Wallet.CoreObject.ViewModels
 {
     public class PagedList<T> : List<T>
     {
@@ -62,12 +56,10 @@ namespace SBSC.Wallet.CoreObject.ViewModels
                         source = source.OrderBy(x => column);
                     }
                 }
-
             }
             var count = source.Count();
             var items = source.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
             return new PagedList<T>(items, count, pageNumber, pageSize);
         }
     }
-
 }

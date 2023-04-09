@@ -5,7 +5,7 @@ using SBSC.Wallet.CoreObject.Enumerables;
 
 namespace SBSC.Wallet.BusinessCore.DbModels;
 
-public partial class WalletContext: DbContext
+public partial class WalletContext : DbContext
 {
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -16,6 +16,7 @@ public partial class WalletContext: DbContext
             optionsBuilder.UseSqlServer(Configuration.GetConnectionString("WalletConnection"));
         }
     }
+
     public virtual int SaveChanges(string? userId = null, bool track = true)
     {
         if (track)
@@ -85,7 +86,8 @@ public partial class WalletContext: DbContext
             Audits.Add(auditEntry.ToAudit());
         }
     }
-    partial void OnModelCreatingPartial(ModelBuilder modelBuilder)
+
+    private partial void OnModelCreatingPartial(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
 
@@ -94,5 +96,4 @@ public partial class WalletContext: DbContext
         modelBuilder.Entity<Admin>().HasQueryFilter(x => !x.IsDeleted);
         modelBuilder.Entity<Currency>().HasQueryFilter(x => !x.IsDeleted);
     }
-
 }

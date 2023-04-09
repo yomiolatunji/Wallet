@@ -1,10 +1,8 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using NuGet.Configuration;
 using SBSC.Wallet.BusinessCore;
 using SBSC.Wallet.CoreObject.ViewModels;
-using System.Configuration;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -61,7 +59,6 @@ builder.Services.AddSwaggerGen(c =>
                                 }
                             },
                             new string[] {}
-
                     }
                 });
 });

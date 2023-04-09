@@ -1,11 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
-using SBSC.Wallet.BusinessCore.Services.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Security.Cryptography;
 
 namespace SBSC.Wallet.BusinessCore.Services
 {

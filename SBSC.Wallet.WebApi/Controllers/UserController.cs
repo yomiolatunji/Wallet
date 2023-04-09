@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using SBSC.Wallet.BusinessCore.Services.Interfaces;
 using SBSC.Wallet.CoreObject.Enumerables;
@@ -6,6 +7,7 @@ using SBSC.Wallet.CoreObject.ViewModels;
 
 namespace SBSC.Wallet.WebApi.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class UserController : ControllerBase
@@ -19,7 +21,7 @@ namespace SBSC.Wallet.WebApi.Controllers
 
         [HttpGet(Name = "GetUsers")]
         [ProducesResponseType(typeof(PagedApiResponse<UserDto>), StatusCodes.Status200OK)]
-        public ActionResult<PagedApiResponse<UserDto>> Get([FromQuery]PagedRequest request)
+        public ActionResult<PagedApiResponse<UserDto>> Get([FromQuery] PagedRequest request)
         {
             var users = _userService.GetUsers(request);
             PagedApiResponse<UserDto> response;
@@ -69,6 +71,7 @@ namespace SBSC.Wallet.WebApi.Controllers
             var response = saved.status ? APIResponse<bool>.Success(true) : APIResponse<bool>.Failed(false);
             return Ok(response);
         }
+
         [HttpPut]
         [ProducesResponseType(typeof(APIResponse<bool>), StatusCodes.Status200OK)]
         public async Task<ActionResult> EditUser([FromBody] EditUserRequest request)

@@ -1,7 +1,6 @@
-﻿using Azure.Core;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using SBSC.Wallet.BusinessCore.Services;
 using SBSC.Wallet.BusinessCore.Services.Interfaces;
 using SBSC.Wallet.CoreObject.Enumerables;
 using SBSC.Wallet.CoreObject.Requests;
@@ -11,6 +10,7 @@ using SBSC.Wallet.CoreObject.ViewModels;
 
 namespace SBSC.Wallet.WebApi.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class WalletController : ControllerBase
@@ -18,14 +18,15 @@ namespace SBSC.Wallet.WebApi.Controllers
         private readonly IWalletService _walletService;
         private readonly ITransactionService _transactionService;
 
-        public WalletController(IWalletService walletService,ITransactionService transactionService)
+        public WalletController(IWalletService walletService, ITransactionService transactionService)
         {
             _walletService = walletService;
             _transactionService = transactionService;
         }
+
         [HttpGet(Name = "GetWallets")]
         [ProducesResponseType(typeof(PagedApiResponse<WalletDto>), StatusCodes.Status200OK)]
-        public ActionResult<PagedApiResponse<WalletDto>> Get([FromQuery]PagedRequest request)
+        public ActionResult<PagedApiResponse<WalletDto>> Get([FromQuery] PagedRequest request)
         {
             var wallets = _walletService.GetWallets(request);
             PagedApiResponse<WalletDto> response;
@@ -84,6 +85,7 @@ namespace SBSC.Wallet.WebApi.Controllers
             var response = saved.status ? APIResponse<bool>.Success(true) : APIResponse<bool>.Failed(false);
             return Ok(response);
         }
+
         [HttpPost("credit-wallet")]
         [ProducesResponseType(typeof(APIResponse<string>), StatusCodes.Status200OK)]
         public async Task<ActionResult> CreditWallet(FundWalletRequest request)
@@ -93,11 +95,12 @@ namespace SBSC.Wallet.WebApi.Controllers
                 var errorMessage = string.Join(" | ", ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage));
                 return BadRequest(errorMessage);
             }
-            
+
             var saved = await _transactionService.FundWallet(request);
             var response = saved.status ? APIResponse<string>.Success(saved.message) : APIResponse<string>.Failed(saved.message);
             return Ok(response);
         }
+
         [HttpPost("debit-wallet")]
         [ProducesResponseType(typeof(APIResponse<string>), StatusCodes.Status200OK)]
         public async Task<ActionResult> DebitWallet(FundWalletRequest request)
@@ -107,12 +110,13 @@ namespace SBSC.Wallet.WebApi.Controllers
                 var errorMessage = string.Join(" | ", ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage));
                 return BadRequest(errorMessage);
             }
-            
+
             var saved = await _transactionService.DebitWallet(request);
             var response = saved.status ? APIResponse<string>.Success(saved.message) : APIResponse<string>.Failed(saved.message);
             return Ok(response);
         }
-        [HttpGet("user-transactions",Name = "GetUserTransactions")]
+
+        [HttpGet("user-transactions", Name = "GetUserTransactions")]
         [ProducesResponseType(typeof(PagedApiResponse<TransactionDto>), StatusCodes.Status200OK)]
         public ActionResult<PagedApiResponse<TransactionDto>> GetTransaction([FromQuery] UserTransactionRequest request)
         {

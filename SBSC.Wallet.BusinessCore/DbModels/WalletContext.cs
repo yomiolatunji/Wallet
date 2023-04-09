@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace SBSC.Wallet.BusinessCore.DbModels;
 
@@ -26,7 +24,6 @@ public partial class WalletContext
     public virtual DbSet<User> Users { get; set; }
 
     public virtual DbSet<Wallet> Wallets { get; set; }
-
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -156,5 +153,5 @@ public partial class WalletContext
         OnModelCreatingPartial(modelBuilder);
     }
 
-    partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+    private partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 }

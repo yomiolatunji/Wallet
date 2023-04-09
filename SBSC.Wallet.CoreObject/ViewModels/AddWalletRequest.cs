@@ -6,6 +6,7 @@ namespace SBSC.Wallet.CoreObject.ViewModels
     {
         [Required]
         public long UserId { get; set; }
+
         [Required]
         public string Currency { get; set; }
     }

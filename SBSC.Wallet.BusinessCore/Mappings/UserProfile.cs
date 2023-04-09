@@ -1,23 +1,19 @@
 ﻿using AutoMapper;
 using SBSC.Wallet.BusinessCore.DbModels;
 using SBSC.Wallet.CoreObject.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SBSC.Wallet.BusinessCore.Mappings
 {
-    public class UserProfile:Profile
+    public class UserProfile : Profile
     {
-        public UserProfile() {
+        public UserProfile()
+        {
             CreateMap<AddUserRequest, User>()
                 .ReverseMap();
             CreateMap<User, UserDto>()
                 .ForMember(src => src.FullName, dest => dest.MapFrom(a => $"{a.FirstName} {a.LastName}"))
                 .ReverseMap();
-            CreateMap<EditUserRequest, User>() 
+            CreateMap<EditUserRequest, User>()
                 .ReverseMap();
         }
     }

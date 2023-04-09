@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SBSC.Wallet.BusinessCore.Services.Interfaces;
 using SBSC.Wallet.CoreObject.ViewModels;
 
 namespace SBSC.Wallet.WebApi.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class AccountController : ControllerBase
@@ -14,6 +16,8 @@ namespace SBSC.Wallet.WebApi.Controllers
         {
             _userService = userService;
         }
+
+        [AllowAnonymous]
         [HttpPost("login")]
         public async Task<ActionResult> Login(LoginRequest loginRequest)
         {
@@ -26,6 +30,7 @@ namespace SBSC.Wallet.WebApi.Controllers
             var response = loggedIn.status ? APIResponse<string>.Success(loggedIn.token) : APIResponse<string>.Failed("");
             return Ok(response);
         }
+
         [HttpPost("change-password")]
         public async Task<ActionResult> ChangePassword(ChangePasswordRequest request)
         {
@@ -38,6 +43,8 @@ namespace SBSC.Wallet.WebApi.Controllers
             var response = loggedIn.status ? APIResponse<string>.Success(loggedIn.message) : APIResponse<string>.Failed(loggedIn.message);
             return Ok(response);
         }
+
+        [AllowAnonymous]
         [HttpPost("admin/login")]
         public async Task<ActionResult> AdminLogin(LoginRequest loginRequest)
         {

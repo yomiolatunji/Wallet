@@ -40,16 +40,15 @@ namespace SBSC.Wallet.CoreObject.ViewModels
             };
         }
 
-
         public static PagedApiResponse<T> Failed(PagedList<T> _data, string _message = "Failed")
         {
             return new PagedApiResponse<T> { code = ResponseCodes.Failed.code, message = _message, data = _data };
         }
+
         public static PagedApiResponse<T> NoRecordFound(string _message = "No record found")
         {
             return new PagedApiResponse<T> { code = ResponseCodes.NotFound.code, message = _message };
         }
-
 
         public PagedApiResponse()
         {

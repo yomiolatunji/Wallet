@@ -1,9 +1,7 @@
 ﻿using AutoMapper;
-using Azure.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json;
 using SBSC.Wallet.BusinessCore.DbModels;
 using SBSC.Wallet.BusinessCore.Services.Interfaces;
 using SBSC.Wallet.CoreObject.Enumerables;
@@ -166,9 +164,10 @@ namespace SBSC.Wallet.BusinessCore.Services
             {
                 return (false, null);
             }
-            var token = GenerateToken(_mapper.Map<UserDto>(user), "USER");
+            var token = GenerateToken(_mapper.Map<UserDto>(user), UserRoles.User);
             return (true, token);
         }
+
         public async Task<(bool status, string? token)> AdminLogin(LoginRequest request)
         {
             var admin = await _context.Admins.FirstOrDefaultAsync(a => a.Email == request.Email);
@@ -181,9 +180,10 @@ namespace SBSC.Wallet.BusinessCore.Services
             {
                 return (false, null);
             }
-            var token = GenerateToken(_mapper.Map<UserDto>(admin), "ADMIN");
+            var token = GenerateToken(_mapper.Map<UserDto>(admin), admin.Role);
             return (true, token);
         }
+
         private string GenerateToken(UserDto user, string role)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(GetAppSetting("Jwt:SecretKey")));
@@ -191,14 +191,14 @@ namespace SBSC.Wallet.BusinessCore.Services
 
             var claims = new List<Claim>()
             {
-                new Claim("Email", user.Email),
+                new Claim(ClaimTypes.NameIdentifier, user.Email),
+                new Claim(ClaimTypes.Email, user.Email),
                 new Claim("UserId", user.Id.ToString()),
                 new Claim("FirstName", user.FirstName),
                 new Claim("FullName", user.FullName ),
-                new Claim("Role", role),
+                new Claim(ClaimTypes.Role, role),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             };
-
 
             var token = new JwtSecurityToken(
                 issuer: GetAppSetting("Jwt:Issuer"),

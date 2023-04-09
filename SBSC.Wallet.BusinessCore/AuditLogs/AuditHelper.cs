@@ -2,11 +2,6 @@
 using Newtonsoft.Json;
 using SBSC.Wallet.BusinessCore.DbModels;
 using SBSC.Wallet.CoreObject.Enumerables;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SBSC.Wallet.BusinessCore.AuditLogs
 {

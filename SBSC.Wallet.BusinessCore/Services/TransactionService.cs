@@ -13,6 +13,7 @@ namespace SBSC.Wallet.BusinessCore.Services
     {
         private readonly WalletContext _context;
         private readonly IMapper _mapper;
+
         public TransactionService(WalletContext context, IMapper mapper, IConfiguration configuration) : base(configuration)
         {
             _context = context;
@@ -38,7 +39,7 @@ namespace SBSC.Wallet.BusinessCore.Services
             {
                 return (false, ResponseCodes.CreditRestrictionWallet.message);
             }
-            if (wallet.Currency.Trim().ToLower()==request.Currency.Trim().ToLower())
+            if (wallet.Currency.Trim().ToLower() == request.Currency.Trim().ToLower())
             {
                 return (false, ResponseCodes.InvalidCurrency.message);
             }
@@ -67,6 +68,7 @@ namespace SBSC.Wallet.BusinessCore.Services
             }
             return (false, ResponseCodes.Failed.message);
         }
+
         public async Task<(bool status, string message)> DebitWallet(FundWalletRequest request)
         {
             if (request == null)
@@ -179,7 +181,7 @@ namespace SBSC.Wallet.BusinessCore.Services
                 throw new ArgumentNullException(nameof(request));
             }
 
-            var collection = _context.Transactions.Include(a=>a.Wallet.User).Where(a => a.WalletId == request.WalletId);
+            var collection = _context.Transactions.Include(a => a.Wallet.User).Where(a => a.WalletId == request.WalletId);
             if (request.StartDate.HasValue && request.EndDate.HasValue && (request.EndDate.GetValueOrDefault() >= request.StartDate.GetValueOrDefault()))
             {
                 collection.Where(a => a.TransactionDate >= request.StartDate.GetValueOrDefault() && a.TransactionDate <= request.EndDate.GetValueOrDefault());

@@ -4,7 +4,7 @@ using SBSC.Wallet.CoreObject.ViewModels;
 
 namespace SBSC.Wallet.BusinessCore.Mappings
 {
-    public class WalletProfile:Profile
+    public class WalletProfile : Profile
     {
         public WalletProfile()
         {
