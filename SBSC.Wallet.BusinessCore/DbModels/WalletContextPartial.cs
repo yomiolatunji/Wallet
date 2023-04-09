@@ -1,12 +1,11 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using SBSC.Wallet.BusinessCore.AuditLogs;
 using SBSC.Wallet.CoreObject.Enumerables;
 
 namespace SBSC.Wallet.BusinessCore.DbModels;
 
-public partial class WalletContext: IdentityDbContext
+public partial class WalletContext: DbContext
 {
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

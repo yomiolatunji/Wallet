@@ -5,7 +5,11 @@ namespace SBSC.Wallet.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TransactionController : ControllerBase
+    public class CurrencyController : ControllerBase
     {
+        public CurrencyController()
+        {
+            
+        }
     }
 }

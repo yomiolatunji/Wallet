@@ -9,15 +9,12 @@ using System.Threading.Tasks;
 
 namespace SBSC.Wallet.BusinessCore.Services
 {
-    public class PasswordService : BaseService, IPasswordService
+    public static class PasswordService
     {
-        public PasswordService(IConfiguration configuration) : base(configuration)
-        {
-        }
         private const int SaltSize = 16;
         private const int KeySize = 32;
 
-        public string HashPassword(string password)
+        public static string HashPassword(string password)
         {
             // Generate a random salt
             var salt = new byte[SaltSize];
@@ -38,7 +35,7 @@ namespace SBSC.Wallet.BusinessCore.Services
             return Convert.ToBase64String(hashBytes);
         }
 
-        public bool VerifyPassword(string password, string hashedPassword)
+        public static bool VerifyPassword(string password, string hashedPassword)
         {
             // Convert the base64-encoded string back to a byte array
             var hashBytes = Convert.FromBase64String(hashedPassword);

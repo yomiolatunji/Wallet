@@ -18,14 +18,12 @@ namespace SBSC.Wallet.BusinessCore.Services
     {
         private readonly WalletContext _context;
         private readonly IMapper _mapper;
-        private readonly IPasswordService _passwordService;
         private readonly IWalletService _walletService;
 
-        public UserService(WalletContext context, IMapper mapper, IPasswordService passwordService, IWalletService walletService, IConfiguration configuration) : base(configuration)
+        public UserService(WalletContext context, IMapper mapper, IWalletService walletService, IConfiguration configuration) : base(configuration)
         {
             _context = context;
             _mapper = mapper;
-            _passwordService = passwordService;
             _walletService = walletService;
         }
 
@@ -39,7 +37,7 @@ namespace SBSC.Wallet.BusinessCore.Services
             userRequest.DateCreated = DateTime.Now;
             userRequest.CreatedBy = 0;
             userRequest.IsDeleted = false;
-            userRequest.Password = _passwordService.HashPassword(request.Password);
+            userRequest.Password = PasswordService.HashPassword(request.Password);
             //TODO: Save profilepicture
 
             await _context.Users.AddAsync(userRequest);
@@ -77,12 +75,12 @@ namespace SBSC.Wallet.BusinessCore.Services
             {
                 return (false, ResponseCodes.NotFound.message);
             }
-            var validPassword = _passwordService.VerifyPassword(request.OldPassword, user.Password);
+            var validPassword = PasswordService.VerifyPassword(request.OldPassword, user.Password);
             if (!validPassword)
             {
                 return (false, "Invalid Email/Password");
             }
-            user.Password = _passwordService.HashPassword(request.NewPassword);
+            user.Password = PasswordService.HashPassword(request.NewPassword);
             user.DateUpdated = DateTime.Now;
             var updated = (await _context.SaveChangesAsync()) > 0;
             if (updated)
@@ -163,7 +161,7 @@ namespace SBSC.Wallet.BusinessCore.Services
             {
                 return (false, null);
             }
-            var validPassword = _passwordService.VerifyPassword(request.Password, user.Password);
+            var validPassword = PasswordService.VerifyPassword(request.Password, user.Password);
             if (!validPassword)
             {
                 return (false, null);
@@ -178,7 +176,7 @@ namespace SBSC.Wallet.BusinessCore.Services
             {
                 return (false, null);
             }
-            var validPassword = _passwordService.VerifyPassword(request.Password, admin.Password);
+            var validPassword = PasswordService.VerifyPassword(request.Password, admin.Password);
             if (!validPassword)
             {
                 return (false, null);
