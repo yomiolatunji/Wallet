@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using SBSC.Wallet.BusinessCore;
+using SBSC.Wallet.BusinessCore.Services;
 using SBSC.Wallet.CoreObject.ViewModels;
 using System.Text;
 
@@ -82,6 +83,9 @@ builder.Services.AddHangfireServer();
 builder.Services.AddCoreService();
 
 var app = builder.Build();
+
+SeedUserDataService.Initialize(app.Services);
+RecurringJobService.Initialize(app.Services);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

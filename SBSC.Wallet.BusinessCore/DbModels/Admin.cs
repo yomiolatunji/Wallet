@@ -1,4 +1,7 @@
-﻿namespace SBSC.Wallet.BusinessCore.DbModels;
+﻿using System;
+using System.Collections.Generic;
+
+namespace SBSC.Wallet.BusinessCore.DbModels;
 
 public partial class Admin
 {

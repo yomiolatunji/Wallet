@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 
 namespace SBSC.Wallet.BusinessCore.DbModels;
 
@@ -18,6 +20,8 @@ public partial class WalletContext
     public virtual DbSet<Audit> Audits { get; set; }
 
     public virtual DbSet<Currency> Currencies { get; set; }
+
+    public virtual DbSet<InterestPayable> InterestPayables { get; set; }
 
     public virtual DbSet<Transaction> Transactions { get; set; }
 
@@ -70,6 +74,16 @@ public partial class WalletContext
             entity.Property(e => e.DateUpdated).HasColumnType("datetime");
             entity.Property(e => e.Name).HasMaxLength(50);
             entity.Property(e => e.Symbol).HasMaxLength(10);
+        });
+
+        modelBuilder.Entity<InterestPayable>(entity =>
+        {
+            entity.Property(e => e.Amount).HasColumnType("decimal(18, 2)");
+            entity.Property(e => e.Currency).HasMaxLength(3);
+            entity.Property(e => e.RunDate)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime");
+            entity.Property(e => e.ValueDate).HasColumnType("datetime");
         });
 
         modelBuilder.Entity<Transaction>(entity =>
