@@ -9,6 +9,7 @@ using YomiOlatunji.Wallet.CoreObject.ViewModels;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Azure.Core;
 
 namespace YomiOlatunji.Wallet.BusinessCore.Services
 {
@@ -157,12 +158,16 @@ namespace YomiOlatunji.Wallet.BusinessCore.Services
             var user = await _context.Users.FirstOrDefaultAsync(a => a.Email == request.Email);
             if (user == null)
             {
-                return (false, null);
+                return (false, "Invalid Email/Password");
             }
             var validPassword = PasswordService.VerifyPassword(request.Password, user.Password);
             if (!validPassword)
             {
-                return (false, null);
+                return (false, "Invalid Email/Password");
+            }
+            if (!user.IsActive.GetValueOrDefault())
+            {
+                return (false, "Inactive User");
             }
             var token = GenerateToken(_mapper.Map<UserDto>(user), UserRoles.User);
             return (true, token);
@@ -173,12 +178,16 @@ namespace YomiOlatunji.Wallet.BusinessCore.Services
             var admin = await _context.Admins.FirstOrDefaultAsync(a => a.Email == request.Email);
             if (admin == null)
             {
-                return (false, null);
+                return (false, "Invalid Email/Password");
             }
             var validPassword = PasswordService.VerifyPassword(request.Password, admin.Password);
             if (!validPassword)
             {
-                return (false, null);
+                return (false, "Invalid Email/Password");
+            }
+            if (!admin.IsActive.GetValueOrDefault())
+            {
+                return (false, "Inactive User");
             }
             var token = GenerateToken(_mapper.Map<UserDto>(admin), admin.Role);
             return (true, token);
@@ -208,6 +217,84 @@ namespace YomiOlatunji.Wallet.BusinessCore.Services
                 signingCredentials: credentials
             );
             return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+        public async Task<(bool status, string message)> AddAdmin(AddAdminRequest request)
+        {
+            return await CreateAdmin(request,UserRoles.Admin);
+        }
+
+        public async Task<(bool status, string message)> AddSuperAdmin(AddAdminRequest request)
+        {
+            return await CreateAdmin(request, UserRoles.SuperAdmin);
+        }
+
+        private async Task<(bool status, string message)> CreateAdmin(AddAdminRequest request, string role)
+        {
+            if (request == null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+            var adminRequest = _mapper.Map<AddAdminRequest, Admin>(request);
+            adminRequest.Role = role;
+            adminRequest.DateCreated = DateTime.Now;
+            adminRequest.CreatedBy = 0;
+            adminRequest.IsDeleted = false;
+            adminRequest.Password = PasswordService.HashPassword(request.Password);
+            
+            await _context.Admins.AddAsync(adminRequest);
+            var inserted = (await _context.SaveChangesAsync()) > 0;
+            if (inserted)
+            {
+                return (true, ResponseCodes.Success.message);
+            }
+            return (false, ResponseCodes.Failed.message);
+        }
+
+        public async Task<(bool status, string message)> ActivateUser(long userId)
+        {
+            if (userId >0)
+            {
+                throw new ArgumentNullException(nameof(userId));
+            }
+            var user = await _context.Users.FirstOrDefaultAsync(a => a.Id == userId);
+            if (user == null)
+            {
+                return (false, ResponseCodes.NotFound.message);
+            }
+           
+            user.IsActive = true;
+            user.DateUpdated = DateTime.Now;
+
+            var updated = (await _context.SaveChangesAsync()) > 0;
+            if (updated)
+            {
+                return (true, ResponseCodes.Success.message);
+            }
+            return (false, ResponseCodes.Failed.message);
+        }
+
+        public async Task<(bool status, string message)> DeactivateUser(long userId)
+        {
+            if (userId > 0)
+            {
+                throw new ArgumentNullException(nameof(userId));
+            }
+            var user = await _context.Users.FirstOrDefaultAsync(a => a.Id == userId);
+            if (user == null)
+            {
+                return (false, ResponseCodes.NotFound.message);
+            }
+
+            user.IsActive = false;
+            user.DateUpdated = DateTime.Now;
+
+            var updated = (await _context.SaveChangesAsync()) > 0;
+            if (updated)
+            {
+                return (true, ResponseCodes.Success.message);
+            }
+            return (false, ResponseCodes.Failed.message);
         }
     }
 }

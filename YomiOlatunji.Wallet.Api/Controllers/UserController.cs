@@ -59,7 +59,7 @@ namespace YomiOlatunji.Wallet.WebApi.Controllers
         }
 
         [HttpPost]
-        [ProducesResponseType(typeof(APIResponse<bool>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse<bool>), StatusCodes.Status200OK)]
         public async Task<ActionResult> AddUser([FromBody] AddUserRequest request)
         {
             if (!ModelState.IsValid)
@@ -68,12 +68,12 @@ namespace YomiOlatunji.Wallet.WebApi.Controllers
                 return BadRequest(errorMessage);
             }
             var saved = await _userService.Add(request);
-            var response = saved.status ? APIResponse<bool>.Success(true) : APIResponse<bool>.Failed(false);
+            var response = saved.status ? ApiResponse<bool>.Success(true) : ApiResponse<bool>.Failed(false);
             return Ok(response);
         }
 
         [HttpPut]
-        [ProducesResponseType(typeof(APIResponse<bool>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse<bool>), StatusCodes.Status200OK)]
         public async Task<ActionResult> EditUser([FromBody] EditUserRequest request)
         {
             if (!ModelState.IsValid)
@@ -82,7 +82,7 @@ namespace YomiOlatunji.Wallet.WebApi.Controllers
                 return BadRequest(errorMessage);
             }
             var saved = await _userService.Edit(request);
-            var response = saved.status ? APIResponse<bool>.Success(true) : new APIResponse<bool>() { Message = saved.message, Data = false, Code = ResponseCodes.Failed.code };
+            var response = saved.status ? ApiResponse<bool>.Success(true) : new ApiResponse<bool>() { Message = saved.message, Data = false, Code = ResponseCodes.Failed.code };
             return Ok(response);
         }
 

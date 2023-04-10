@@ -31,6 +31,8 @@ public partial class User
 
     public DateTime? DateDeleted { get; set; }
 
+    public bool? IsActive { get; set; }
+
     public virtual ICollection<Transaction> Transactions { get; } = new List<Transaction>();
 
     public virtual ICollection<Wallet> Wallets { get; } = new List<Wallet>();

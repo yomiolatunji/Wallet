@@ -64,16 +64,16 @@ namespace YomiOlatunji.Wallet.WebApi.Controllers
         }
 
         [HttpGet("user/{userId}")]
-        [ProducesResponseType(typeof(APIResponse<IEnumerable<WalletDto>>), StatusCodes.Status200OK)]
-        public async Task<ActionResult<APIResponse<IEnumerable<WalletDto>>>> GetWalletByUser(long userId)
+        [ProducesResponseType(typeof(ApiResponse<IEnumerable<WalletDto>>), StatusCodes.Status200OK)]
+        public async Task<ActionResult<ApiResponse<IEnumerable<WalletDto>>>> GetWalletByUser(long userId)
         {
             var wallet = await _walletService.GetWalletByUser(userId);
-            var response = wallet != null ? APIResponse<IEnumerable<WalletDto>>.Success(wallet) : APIResponse<IEnumerable<WalletDto>>.Failed(null);
+            var response = wallet != null ? ApiResponse<IEnumerable<WalletDto>>.Success(wallet) : ApiResponse<IEnumerable<WalletDto>>.Failed(null);
             return Ok(response);
         }
 
         [HttpPost]
-        [ProducesResponseType(typeof(APIResponse<bool>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse<bool>), StatusCodes.Status200OK)]
         public async Task<ActionResult> AddWallet([FromBody] AddWalletRequest request)
         {
             if (!ModelState.IsValid)
@@ -82,12 +82,12 @@ namespace YomiOlatunji.Wallet.WebApi.Controllers
                 return BadRequest(errorMessage);
             }
             var saved = await _walletService.CreateWallet(request);
-            var response = saved.status ? APIResponse<bool>.Success(true) : APIResponse<bool>.Failed(false);
+            var response = saved.status ? ApiResponse<bool>.Success(true) : ApiResponse<bool>.Failed(false);
             return Ok(response);
         }
 
         [HttpPost("credit-wallet")]
-        [ProducesResponseType(typeof(APIResponse<string>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status200OK)]
         public async Task<ActionResult> CreditWallet(FundWalletRequest request)
         {
             if (!ModelState.IsValid)
@@ -97,12 +97,12 @@ namespace YomiOlatunji.Wallet.WebApi.Controllers
             }
 
             var saved = await _transactionService.FundWallet(request);
-            var response = saved.status ? APIResponse<string>.Success(saved.message) : APIResponse<string>.Failed(saved.message);
+            var response = saved.status ? ApiResponse<string>.Success(saved.message) : ApiResponse<string>.Failed(saved.message);
             return Ok(response);
         }
 
         [HttpPost("debit-wallet")]
-        [ProducesResponseType(typeof(APIResponse<string>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status200OK)]
         public async Task<ActionResult> DebitWallet(FundWalletRequest request)
         {
             if (!ModelState.IsValid)
@@ -112,7 +112,7 @@ namespace YomiOlatunji.Wallet.WebApi.Controllers
             }
 
             var saved = await _transactionService.DebitWallet(request);
-            var response = saved.status ? APIResponse<string>.Success(saved.message) : APIResponse<string>.Failed(saved.message);
+            var response = saved.status ? ApiResponse<string>.Success(saved.message) : ApiResponse<string>.Failed(saved.message);
             return Ok(response);
         }
 

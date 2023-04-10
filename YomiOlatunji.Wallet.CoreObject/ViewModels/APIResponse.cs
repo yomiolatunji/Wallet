@@ -2,7 +2,7 @@
 
 namespace YomiOlatunji.Wallet.CoreObject.ViewModels
 {
-    public class APIResponse<T>
+    public class ApiResponse<T>
     {
         public string Code { get; set; }
         public string Message { get; set; }
@@ -14,24 +14,14 @@ namespace YomiOlatunji.Wallet.CoreObject.ViewModels
         /// <param name="_data"></param>
         /// <param name="_message"></param>
         /// <returns></returns>
-        public static APIResponse<T> Success(T _data, string _message = "Successful")
+        public static ApiResponse<T> Success(T _data, string _message = "Successful")
         {
-            return new APIResponse<T> { Code = ResponseCodes.Success.code, Message = _message, Data = _data };
+            return new ApiResponse<T> { Code = ResponseCodes.Success.code, Message = _message, Data = _data };
         }
 
-        public static APIResponse<T> Failed(T _data, string _message = "Failed")
+        public static ApiResponse<T> Failed(T _data, string _message = "Failed")
         {
-            return new APIResponse<T> { Code = ResponseCodes.Failed.code, Message = _message, Data = _data };
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="_message"></param>
-        /// <returns></returns>
-        public static APIResponse<T> NoRecordFound(string _message = "No record found")
-        {
-            return new APIResponse<T> { Code = ResponseCodes.NotFound.code, Message = _message };
+            return new ApiResponse<T> { Code = ResponseCodes.Failed.code, Message = _message, Data = _data };
         }
 
         /// <summary>
@@ -39,9 +29,19 @@ namespace YomiOlatunji.Wallet.CoreObject.ViewModels
         /// </summary>
         /// <param name="_message"></param>
         /// <returns></returns>
-        public static APIResponse<T> BadRequest(string _message)
+        public static ApiResponse<T> NoRecordFound(string _message = "No record found")
         {
-            return new APIResponse<T> { Code = ResponseCodes.BadRequest.code, Message = _message };
+            return new ApiResponse<T> { Code = ResponseCodes.NotFound.code, Message = _message };
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="_message"></param>
+        /// <returns></returns>
+        public static ApiResponse<T> BadRequest(string _message)
+        {
+            return new ApiResponse<T> { Code = ResponseCodes.BadRequest.code, Message = _message };
         }
     }
 }

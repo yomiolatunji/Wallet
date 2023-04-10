@@ -86,6 +86,11 @@ public partial class WalletContext
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
             entity.Property(e => e.ValueDate).HasColumnType("datetime");
+
+            entity.HasOne(d => d.Wallet).WithMany(p => p.InterestPayables)
+                .HasForeignKey(d => d.WalletId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_InterestPayables_Wallets");
         });
 
         modelBuilder.Entity<Notification>(entity =>
@@ -136,6 +141,9 @@ public partial class WalletContext
             entity.Property(e => e.DateUpdated).HasColumnType("datetime");
             entity.Property(e => e.Email).HasMaxLength(256);
             entity.Property(e => e.FirstName).HasMaxLength(50);
+            entity.Property(e => e.IsActive)
+                .IsRequired()
+                .HasDefaultValueSql("((1))");
             entity.Property(e => e.LastName).HasMaxLength(50);
             entity.Property(e => e.Password).HasMaxLength(256);
             entity.Property(e => e.ProfilePictureUrl).HasMaxLength(256);

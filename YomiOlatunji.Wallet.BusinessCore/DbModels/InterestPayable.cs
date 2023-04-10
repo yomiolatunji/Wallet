@@ -16,4 +16,6 @@ public partial class InterestPayable
     public DateTime ValueDate { get; set; }
 
     public DateTime RunDate { get; set; }
+
+    public virtual Wallet Wallet { get; set; } = null!;
 }

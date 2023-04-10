@@ -27,7 +27,7 @@ namespace YomiOlatunji.Wallet.WebApi.Controllers
                 return BadRequest(errorMessage);
             }
             var loggedIn = await _userService.Login(loginRequest);
-            var response = loggedIn.status ? APIResponse<string>.Success(loggedIn.token) : APIResponse<string>.Failed("");
+            var response = loggedIn.status ? ApiResponse<string>.Success(loggedIn.token) : ApiResponse<string>.Failed("");
             return Ok(response);
         }
 
@@ -40,7 +40,7 @@ namespace YomiOlatunji.Wallet.WebApi.Controllers
                 return BadRequest(errorMessage);
             }
             var loggedIn = await _userService.ChangePassword(request);
-            var response = loggedIn.status ? APIResponse<string>.Success(loggedIn.message) : APIResponse<string>.Failed(loggedIn.message);
+            var response = loggedIn.status ? ApiResponse<string>.Success(loggedIn.message) : ApiResponse<string>.Failed(loggedIn.message);
             return Ok(response);
         }
 
@@ -54,7 +54,7 @@ namespace YomiOlatunji.Wallet.WebApi.Controllers
                 return BadRequest(errorMessage);
             }
             var loggedIn = await _userService.AdminLogin(loginRequest);
-            var response = loggedIn.status ? APIResponse<string>.Success(loggedIn.token) : APIResponse<string>.Failed("");
+            var response = loggedIn.status ? ApiResponse<string>.Success(loggedIn.token) : ApiResponse<string>.Failed("");
             return Ok(response);
         }
     }
