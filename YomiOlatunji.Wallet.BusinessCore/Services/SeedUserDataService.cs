@@ -1,11 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using YomiOlatunji.Wallet.BusinessCore.DbModels;
 using YomiOlatunji.Wallet.CoreObject.Enumerables;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace YomiOlatunji.Wallet.BusinessCore.Services
 {
@@ -23,7 +18,7 @@ namespace YomiOlatunji.Wallet.BusinessCore.Services
                 var admin = new Admin()
                 {
                     Name = "Super Admin",
-                    Email = "superadmin@YomiOlatunjiwallet.com",
+                    Email = "superadmin@wallet.com",
                     Role = UserRoles.SuperAdmin,
                     CreatedBy = 0,
                     DateCreated = DateTime.Now,
@@ -32,7 +27,7 @@ namespace YomiOlatunji.Wallet.BusinessCore.Services
                     IsDeleted = false
                 };
 
-                if (!context.Users.Any(u => u.Email == admin.Email))
+                if (!context.Admins.Any(u => u.Email == admin.Email))
                 {
                     context.Admins.Add(admin);
                     context.SaveChanges();

@@ -13,13 +13,17 @@ namespace YomiOlatunji.Wallet.BusinessCore.Mappings
                 .ForMember(src => src.FirstName, dest => dest.MapFrom(a => a.Name.Split(' ', System.StringSplitOptions.None).FirstOrDefault()))
                 .ForMember(src => src.FullName, dest => dest.MapFrom(a => a.Name))
                 .ReverseMap();
-
             CreateMap<AddAdminRequest, Admin>()
                 .ReverseMap();
             
             CreateMap<Currency, CurrencyDto>()
                 .ReverseMap();
             CreateMap<AddCurrencyRequest, Currency>()
+                .ReverseMap();
+
+            CreateMap<NotificationDto, Notification>()
+                .ReverseMap();
+            CreateMap<UserPagedRequest, PagedRequest>()
                 .ReverseMap();
 
         }

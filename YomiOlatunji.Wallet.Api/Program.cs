@@ -85,7 +85,6 @@ builder.Services.AddCoreService();
 var app = builder.Build();
 
 SeedUserDataService.Initialize(app.Services);
-RecurringJobService.Initialize(app.Services);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -99,6 +98,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.UseHangfireDashboard();
+RecurringJobService.Initialize(app.Services);
 
 app.MapControllers();
 

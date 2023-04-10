@@ -156,7 +156,7 @@ namespace YomiOlatunji.Wallet.BusinessCore.Services
 
         public async Task<(bool status, string? token)> Login(LoginRequest request)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(a => a.Email == request.Email);
+            var user = await _context.Users.FirstOrDefaultAsync(a => a.Email.Trim().ToLower() == request.Email.Trim().ToLower());
             if (user == null)
             {
                 return (false, "Invalid Email/Password");
@@ -176,7 +176,7 @@ namespace YomiOlatunji.Wallet.BusinessCore.Services
 
         public async Task<(bool status, string? token)> AdminLogin(LoginRequest request)
         {
-            var admin = await _context.Admins.FirstOrDefaultAsync(a => a.Email == request.Email);
+            var admin = await _context.Admins.FirstOrDefaultAsync(a => a.Email.Trim().ToLower() == request.Email.Trim().ToLower());
             if (admin == null)
             {
                 return (false, "Invalid Email/Password");

@@ -15,6 +15,7 @@ namespace YomiOlatunji.Wallet.BusinessCore
             services.AddScoped<IWalletService, WalletService>();
             services.AddScoped<ITransactionService, TransactionService>();
             services.AddScoped<ICurrencyService, CurrencyService>();
+            services.AddScoped<INotificationService, NotificationService>();
 
             return services;
         }
