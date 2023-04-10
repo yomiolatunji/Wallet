@@ -10,6 +10,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Azure.Core;
+using YomiOlatunji.Wallet.CoreObject.Requests;
 
 namespace YomiOlatunji.Wallet.BusinessCore.Services
 {

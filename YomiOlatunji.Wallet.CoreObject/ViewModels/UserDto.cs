@@ -13,5 +13,4 @@
 
         public string? ProfilePictureUrl { get; set; }
         public byte[]? ProfilePicture { get; set; }
-    }
-}
+    }}

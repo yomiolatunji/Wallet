@@ -1,4 +1,5 @@
-﻿using YomiOlatunji.Wallet.CoreObject.ViewModels;
+﻿using YomiOlatunji.Wallet.CoreObject.Requests;
+using YomiOlatunji.Wallet.CoreObject.ViewModels;
 
 namespace YomiOlatunji.Wallet.BusinessCore.Services.Interfaces
 {

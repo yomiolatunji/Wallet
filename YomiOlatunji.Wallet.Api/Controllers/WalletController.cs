@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using YomiOlatunji.Wallet.BusinessCore.Services.Interfaces;
 using YomiOlatunji.Wallet.CoreObject.Enumerables;
 using YomiOlatunji.Wallet.CoreObject.Requests;
+using YomiOlatunji.Wallet.CoreObject.Responses;
 using YomiOlatunji.Wallet.CoreObject.ViewModels;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860

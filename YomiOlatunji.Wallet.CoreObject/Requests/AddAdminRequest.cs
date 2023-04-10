@@ -1,4 +1,4 @@
-﻿namespace YomiOlatunji.Wallet.CoreObject.ViewModels
+﻿namespace YomiOlatunji.Wallet.CoreObject.Requests
 {
     public class AddAdminRequest
     {

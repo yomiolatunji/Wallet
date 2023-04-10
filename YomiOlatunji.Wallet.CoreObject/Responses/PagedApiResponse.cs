@@ -1,6 +1,7 @@
 ﻿using YomiOlatunji.Wallet.CoreObject.Enumerables;
+using YomiOlatunji.Wallet.CoreObject.ViewModels;
 
-namespace YomiOlatunji.Wallet.CoreObject.ViewModels
+namespace YomiOlatunji.Wallet.CoreObject.Responses
 {
     public class PagedApiResponse<T>
     {

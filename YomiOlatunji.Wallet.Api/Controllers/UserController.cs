@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using YomiOlatunji.Wallet.BusinessCore.Services.Interfaces;
 using YomiOlatunji.Wallet.CoreObject.Enumerables;
+using YomiOlatunji.Wallet.CoreObject.Requests;
+using YomiOlatunji.Wallet.CoreObject.Responses;
 using YomiOlatunji.Wallet.CoreObject.ViewModels;
 
 namespace YomiOlatunji.Wallet.WebApi.Controllers

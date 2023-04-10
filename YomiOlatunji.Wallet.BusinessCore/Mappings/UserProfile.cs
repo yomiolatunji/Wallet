@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using YomiOlatunji.Wallet.BusinessCore.DbModels;
+using YomiOlatunji.Wallet.CoreObject.Requests;
 using YomiOlatunji.Wallet.CoreObject.ViewModels;
 
 namespace YomiOlatunji.Wallet.BusinessCore.Mappings
@@ -16,8 +17,6 @@ namespace YomiOlatunji.Wallet.BusinessCore.Mappings
             CreateMap<EditUserRequest, User>()
                 .ReverseMap();
 
-            CreateMap<AddAdminRequest, Admin>()
-                .ReverseMap();
         }
     }
 }
