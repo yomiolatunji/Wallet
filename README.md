@@ -6,6 +6,7 @@
 ### COMPONENTS BREAKDOWN
 
 The solution is built with C# running on .Net 7.0 and the database is MSSQL database.
+
 ![enter image description here](Doc/SystemDesign.png)
 
 #### COMPONENTS
@@ -27,6 +28,7 @@ The solution is built with C# running on .Net 7.0 and the database is MSSQL data
 
 The main projects are the **YomiOlatunji.Wallet.Api**. This handle the requests from the API clients then passes the data to the **YomiOlatunji.Wallet.BusinessCore** to process the requests.
 Here is a call diagram/workflow of the API to the BusinessCore.
+
 ![enter image description here](Doc/Workflow.png)
 
 ## Endpoints
@@ -34,33 +36,33 @@ Here is a call diagram/workflow of the API to the BusinessCore.
 Here is a list of the Endpoints
 
 - **Account**
- *POST* /api/Account/login
- *POST* /api/Account/change-password
- *POST* /api/Account/admin/login
+  - *POST* /api/Account/login
+  - *POST* /api/Account/change-password
+  - *POST* /api/Account/admin/login
 - **Admin**
- *POST* /api/Admin
- *POST* /api/Admin/superadmin
- *POST* /api/Admin/user/activate
- *POST* /api/Admin/user/deactivate
- *GET*  /api/Admin/transactions/download
+  - *POST* /api/Admin
+  - *POST* /api/Admin/superadmin
+  - *POST* /api/Admin/user/activate
+  - *POST* /api/Admin/user/deactivate
+  - *GET*  /api/Admin/transactions/download
 - **Currency**
- *GET* /api/Currency
- *POST* /api/Currency
+  - *GET* /api/Currency
+  - *POST* /api/Currency
 - **Notification**
- *GET* /api/Notification
- *GET* /api/Notification/{id}
+  - *GET* /api/Notification
+  - *GET* /api/Notification/{id}
 - **User**
- *GET* /api/User
- *POST* /api/User
- *PUT* /api/User
+  - *GET* /api/User
+  - *POST* /api/User
+  - *PUT* /api/User
 - **Wallet**
- *GET* /api/Wallet
- *POST* /api/Wallet
- *GET* /api/Wallet/user/{userId}
- *POST* /api/Wallet/credit-wallet
- *POST* /api/Wallet/debit-wallet
- *GET* /api/Wallet/user-transactions
- *GET* /api/Wallet/{walletId}/transactions
+  - *GET* /api/Wallet
+  - *POST* /api/Wallet
+  - *GET* /api/Wallet/user/{userId}
+  - *POST* /api/Wallet/credit-wallet
+  - *POST* /api/Wallet/debit-wallet
+  - *GET* /api/Wallet/user-transactions
+  - *GET* /api/Wallet/{walletId}/transactions
 
 ## DATABASE DESIGN
 
