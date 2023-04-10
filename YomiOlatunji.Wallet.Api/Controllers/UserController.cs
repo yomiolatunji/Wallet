@@ -7,7 +7,7 @@ using YomiOlatunji.Wallet.CoreObject.Requests;
 using YomiOlatunji.Wallet.CoreObject.Responses;
 using YomiOlatunji.Wallet.CoreObject.ViewModels;
 
-namespace YomiOlatunji.Wallet.WebApi.Controllers
+namespace YomiOlatunji.Wallet.Api.Controllers
 {
     [Authorize]
     [Route("api/[controller]")]

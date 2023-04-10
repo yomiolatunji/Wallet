@@ -1,12 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using YomiOlatunji.Wallet.BusinessCore.Services;
 using YomiOlatunji.Wallet.BusinessCore.Services.Interfaces;
 using YomiOlatunji.Wallet.CoreObject.Enumerables;
 using YomiOlatunji.Wallet.CoreObject.Requests;
 using YomiOlatunji.Wallet.CoreObject.ViewModels;
 
-namespace YomiOlatunji.Wallet.WebApi.Controllers
+namespace YomiOlatunji.Wallet.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

@@ -11,7 +11,7 @@ using YomiOlatunji.Wallet.CoreObject.ViewModels;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace YomiOlatunji.Wallet.WebApi.Controllers
+namespace YomiOlatunji.Wallet.Api.Controllers
 {
     [Authorize]
     [Route("api/[controller]")]

@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using YomiOlatunji.Wallet.BusinessCore.Services.Interfaces;
 using YomiOlatunji.Wallet.CoreObject.ViewModels;
 
-namespace YomiOlatunji.Wallet.WebApi.Controllers
+namespace YomiOlatunji.Wallet.Api.Controllers
 {
     [Authorize]
     [Route("api/[controller]")]
