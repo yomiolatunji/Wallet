@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using Azure.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using YomiOlatunji.Wallet.BusinessCore.DbModels;
+using YomiOlatunji.Wallet.BusinessCore.Helpers;
 using YomiOlatunji.Wallet.BusinessCore.Services.Interfaces;
 using YomiOlatunji.Wallet.CoreObject.Enumerables;
 using YomiOlatunji.Wallet.CoreObject.Requests;
@@ -200,6 +202,19 @@ namespace YomiOlatunji.Wallet.BusinessCore.Services
                 request.SortDirection);
 
             return _mapper.Map<PagedList<TransactionDto>>(transactions);
+        }
+
+        public byte[] DownloadTransactions(DateTime? startDate, DateTime? endDate)
+        {
+            var collection = _context.Transactions.Include(a => a.Wallet.User) as IQueryable<Transaction>;
+            if (startDate.HasValue && endDate.HasValue && (endDate.GetValueOrDefault() >= startDate.GetValueOrDefault()))
+            {
+                collection.Where(a => a.TransactionDate >= startDate.GetValueOrDefault() && a.TransactionDate <= endDate.GetValueOrDefault());
+            }
+
+            var transactions = _mapper.Map<IEnumerable<TransactionDto>>(collection.ToList());
+
+            return ExcelHelper.ConvertListToExcelByte<TransactionDto>(transactions.ToList());
         }
     }
 }

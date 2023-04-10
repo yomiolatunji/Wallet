@@ -1,8 +1,8 @@
 ﻿using System.Security.Cryptography;
 
-namespace YomiOlatunji.Wallet.BusinessCore.Services
+namespace YomiOlatunji.Wallet.BusinessCore.Helpers
 {
-    public static class PasswordService
+    public static class PasswordHelper
     {
         private const int SaltSize = 16;
         private const int KeySize = 32;

@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using YomiOlatunji.Wallet.BusinessCore.DbModels;
 using YomiOlatunji.Wallet.BusinessCore.Services.Interfaces;
 using YomiOlatunji.Wallet.CoreObject.Enumerables;
 using YomiOlatunji.Wallet.CoreObject.Requests;
@@ -18,11 +20,13 @@ namespace YomiOlatunji.Wallet.WebApi.Controllers
     {
         private readonly IWalletService _walletService;
         private readonly ITransactionService _transactionService;
+        private readonly IMapper _mapper;
 
-        public WalletController(IWalletService walletService, ITransactionService transactionService)
+        public WalletController(IWalletService walletService, ITransactionService transactionService, IMapper mapper)
         {
             _walletService = walletService;
             _transactionService = transactionService;
+            _mapper = mapper;
         }
 
         [HttpGet(Name = "GetWallets")]
@@ -135,6 +139,45 @@ namespace YomiOlatunji.Wallet.WebApi.Controllers
                     CreateWalletResourceUri(request,
                     ResourceUriType.NextPage,
                     "GetUserTransactions") : null;
+
+                var paginationMetadata = new
+                {
+                    totalCount = transations.TotalCount,
+                    pageSize = transations.PageSize,
+                    currentPage = transations.CurrentPage,
+                    totalPages = transations.TotalPages,
+                    previousPageLink,
+                    nextPageLink
+                };
+
+                Response.Headers.Add("X-Pagination",
+                    JsonConvert.SerializeObject(paginationMetadata));
+            }
+            else
+            {
+                response = PagedApiResponse<TransactionDto>.NoRecordFound(null);
+            }
+            return response;
+        }
+        [HttpGet("{walletId}/transactions", Name = "GetWalletTransactions")]
+        [ProducesResponseType(typeof(PagedApiResponse<TransactionDto>), StatusCodes.Status200OK)]
+        public ActionResult<PagedApiResponse<TransactionDto>> GetWalletTransaction([FromRoute]long walletId,[FromQuery] TransactionRequest request)
+        {
+            var walletRequest = _mapper.Map<WalletTransactionRequest>(request);
+            var transations = _transactionService.GetTransactionsByWallet(walletRequest);
+            PagedApiResponse<TransactionDto> response;
+            if (transations != null)
+            {
+                response = PagedApiResponse<TransactionDto>.Success(transations);
+                var previousPageLink = transations.HasPrevious ?
+                        CreateWalletResourceUri(request,
+                        ResourceUriType.PreviousPage,
+                        "GetWalletTransactions") : null;
+
+                var nextPageLink = transations.HasNext ?
+                    CreateWalletResourceUri(request,
+                    ResourceUriType.NextPage,
+                    "GetWalletTransactions") : null;
 
                 var paginationMetadata = new
                 {

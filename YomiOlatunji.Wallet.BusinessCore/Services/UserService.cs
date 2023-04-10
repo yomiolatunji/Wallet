@@ -6,6 +6,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using YomiOlatunji.Wallet.BusinessCore.DbModels;
+using YomiOlatunji.Wallet.BusinessCore.Helpers;
 using YomiOlatunji.Wallet.BusinessCore.Integrations.Interfaces;
 using YomiOlatunji.Wallet.BusinessCore.Services.Interfaces;
 using YomiOlatunji.Wallet.CoreObject.Enumerables;
@@ -39,7 +40,7 @@ namespace YomiOlatunji.Wallet.BusinessCore.Services
             userRequest.DateCreated = DateTime.Now;
             userRequest.CreatedBy = 0;
             userRequest.IsDeleted = false;
-            userRequest.Password = PasswordService.HashPassword(request.Password);
+            userRequest.Password = PasswordHelper.HashPassword(request.Password);
             userRequest.ProfilePictureUrl = _cloudinaryIntegration.UploadImage(request.ProfilePictureBase64);
             //TODO: Save profilepicture
 
@@ -78,12 +79,12 @@ namespace YomiOlatunji.Wallet.BusinessCore.Services
             {
                 return (false, ResponseCodes.NotFound.message);
             }
-            var validPassword = PasswordService.VerifyPassword(request.OldPassword, user.Password);
+            var validPassword = PasswordHelper.VerifyPassword(request.OldPassword, user.Password);
             if (!validPassword)
             {
                 return (false, "Invalid Email/Password");
             }
-            user.Password = PasswordService.HashPassword(request.NewPassword);
+            user.Password = PasswordHelper.HashPassword(request.NewPassword);
             user.DateUpdated = DateTime.Now;
             var updated = (await _context.SaveChangesAsync()) > 0;
             if (updated)
@@ -165,7 +166,7 @@ namespace YomiOlatunji.Wallet.BusinessCore.Services
             {
                 return (false, "Invalid Email/Password");
             }
-            var validPassword = PasswordService.VerifyPassword(request.Password, user.Password);
+            var validPassword = PasswordHelper.VerifyPassword(request.Password, user.Password);
             if (!validPassword)
             {
                 return (false, "Invalid Email/Password");
@@ -185,7 +186,7 @@ namespace YomiOlatunji.Wallet.BusinessCore.Services
             {
                 return (false, "Invalid Email/Password");
             }
-            var validPassword = PasswordService.VerifyPassword(request.Password, admin.Password);
+            var validPassword = PasswordHelper.VerifyPassword(request.Password, admin.Password);
             if (!validPassword)
             {
                 return (false, "Invalid Email/Password");
@@ -245,7 +246,7 @@ namespace YomiOlatunji.Wallet.BusinessCore.Services
             adminRequest.DateCreated = DateTime.Now;
             adminRequest.CreatedBy = 0;
             adminRequest.IsDeleted = false;
-            adminRequest.Password = PasswordService.HashPassword(request.Password);
+            adminRequest.Password = PasswordHelper.HashPassword(request.Password);
 
             await _context.Admins.AddAsync(adminRequest);
             var inserted = (await _context.SaveChangesAsync()) > 0;

@@ -25,6 +25,10 @@ namespace YomiOlatunji.Wallet.BusinessCore.Mappings
                 .ReverseMap();
             CreateMap<UserPagedRequest, PagedRequest>()
                 .ReverseMap();
+            CreateMap<WalletTransactionRequest, TransactionRequest>()
+                .ReverseMap();
+            CreateMap<UserTransactionRequest, TransactionRequest>()
+                .ReverseMap();
         }
     }
 }

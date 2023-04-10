@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using YomiOlatunji.Wallet.BusinessCore.Services;
 using YomiOlatunji.Wallet.BusinessCore.Services.Interfaces;
 using YomiOlatunji.Wallet.CoreObject.Enumerables;
 using YomiOlatunji.Wallet.CoreObject.Requests;
@@ -13,10 +14,12 @@ namespace YomiOlatunji.Wallet.WebApi.Controllers
     public class AdminController : ControllerBase
     {
         private readonly IUserService _userService;
+        private readonly ITransactionService _transactionService;
 
-        public AdminController(IUserService userService)
+        public AdminController(IUserService userService, ITransactionService transactionService)
         {
             _userService = userService;
+            _transactionService = transactionService;
         }
 
         [Authorize(Roles = UserRoles.SuperAdmin)]
@@ -75,6 +78,20 @@ namespace YomiOlatunji.Wallet.WebApi.Controllers
             var saved = await _userService.DeactivateUser(userId);
             var response = saved.status ? ApiResponse<bool>.Success(true) : ApiResponse<bool>.Failed(false);
             return Ok(response);
+        }
+        [HttpGet("transactions/download")]
+        public ActionResult DownloadTransactions([FromQuery] DownloadRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                var errorMessage = string.Join(" | ", ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage));
+                return BadRequest(errorMessage);
+            }
+            var res = _transactionService.DownloadTransactions(request.StartDate, request.EndDate);
+
+            var fileName = $@"Transactions_{DateTime.Today.ToString("d")}.xlsx";
+            return File(res, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                fileName);
         }
     }
 }

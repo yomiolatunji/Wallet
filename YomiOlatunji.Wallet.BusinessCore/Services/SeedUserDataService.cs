@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using YomiOlatunji.Wallet.BusinessCore.DbModels;
+using YomiOlatunji.Wallet.BusinessCore.Helpers;
 using YomiOlatunji.Wallet.CoreObject.Enumerables;
 
 namespace YomiOlatunji.Wallet.BusinessCore.Services
@@ -22,7 +23,7 @@ namespace YomiOlatunji.Wallet.BusinessCore.Services
                     Role = UserRoles.SuperAdmin,
                     CreatedBy = 0,
                     DateCreated = DateTime.Now,
-                    Password = PasswordService.HashPassword("P@ssword1"),
+                    Password = PasswordHelper.HashPassword("P@ssword1"),
                     IsActive = true,
                     IsDeleted = false
                 };

@@ -14,5 +14,6 @@ namespace YomiOlatunji.Wallet.BusinessCore.Services.Interfaces
         Task<(bool status, string message)> FundWallet(FundWalletRequest request);
 
         Task<(bool status, string message)> DebitWallet(FundWalletRequest request);
+        byte[] DownloadTransactions(DateTime? startDate, DateTime? endDate);
     }
 }
