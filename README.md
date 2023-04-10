@@ -1,5 +1,5 @@
 
-# SBSC.Wallet
+# YomiOlatunji.Wallet
 
 ## SYSTEM ARCHITECTURE
 
