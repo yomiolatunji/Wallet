@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using YomiOlatunji.Wallet.BusinessCore.DbModels;
+using YomiOlatunji.Wallet.BusinessCore.Integrations.Interfaces;
 using YomiOlatunji.Wallet.BusinessCore.Services.Interfaces;
 using YomiOlatunji.Wallet.CoreObject.Enumerables;
 using YomiOlatunji.Wallet.CoreObject.Requests;
@@ -12,10 +12,12 @@ namespace YomiOlatunji.Wallet.BusinessCore.Services
     public class CurrencyService : BaseService, ICurrencyService
     {
         private readonly WalletContext _context;
+        private readonly ICloudinaryIntegration _cloudinaryIntegration;
         private readonly IMapper _mapper;
-        public CurrencyService(WalletContext context, IMapper mapper, IConfiguration configuration) : base(configuration)
+        public CurrencyService(WalletContext context, ICloudinaryIntegration cloudinaryIntegration, IMapper mapper, IConfiguration configuration) : base(configuration)
         {
             _context = context;
+            _cloudinaryIntegration = cloudinaryIntegration;
             _mapper = mapper;
         }
 
@@ -29,6 +31,8 @@ namespace YomiOlatunji.Wallet.BusinessCore.Services
             ccyRequest.DateCreated = DateTime.Now;
             ccyRequest.CreatedBy = 0;
             ccyRequest.IsDeleted = false;
+            ccyRequest.CurrencyLogoUrl = _cloudinaryIntegration.UploadImage(request.CurrencyLogoBase64);
+
             await _context.Currencies.AddAsync(ccyRequest);
             var inserted = (await _context.SaveChangesAsync()) > 0;
             if (inserted)

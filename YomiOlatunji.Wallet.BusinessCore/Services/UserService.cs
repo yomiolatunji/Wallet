@@ -9,8 +9,8 @@ using YomiOlatunji.Wallet.CoreObject.ViewModels;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Azure.Core;
 using YomiOlatunji.Wallet.CoreObject.Requests;
+using YomiOlatunji.Wallet.BusinessCore.Integrations.Interfaces;
 
 namespace YomiOlatunji.Wallet.BusinessCore.Services
 {
@@ -18,12 +18,14 @@ namespace YomiOlatunji.Wallet.BusinessCore.Services
     {
         private readonly WalletContext _context;
         private readonly IMapper _mapper;
+        private readonly ICloudinaryIntegration _cloudinaryIntegration;
         private readonly IWalletService _walletService;
 
-        public UserService(WalletContext context, IMapper mapper, IWalletService walletService, IConfiguration configuration) : base(configuration)
+        public UserService(WalletContext context, IMapper mapper,ICloudinaryIntegration cloudinaryIntegration, IWalletService walletService, IConfiguration configuration) : base(configuration)
         {
             _context = context;
             _mapper = mapper;
+            _cloudinaryIntegration = cloudinaryIntegration;
             _walletService = walletService;
         }
 
@@ -38,6 +40,7 @@ namespace YomiOlatunji.Wallet.BusinessCore.Services
             userRequest.CreatedBy = 0;
             userRequest.IsDeleted = false;
             userRequest.Password = PasswordService.HashPassword(request.Password);
+            userRequest.ProfilePictureUrl = _cloudinaryIntegration.UploadImage(request.ProfilePictureBase64);
             //TODO: Save profilepicture
 
             await _context.Users.AddAsync(userRequest);
@@ -110,7 +113,8 @@ namespace YomiOlatunji.Wallet.BusinessCore.Services
                 user.LastName = request.LastName;
             }
             user.DateUpdated = DateTime.Now;
-            //TODO: Save profilepicture
+            if(!string.IsNullOrWhiteSpace(request.ProfilePictureBase64))
+            user.ProfilePictureUrl = _cloudinaryIntegration.UploadImage(request.ProfilePictureBase64);
 
             var updated = (await _context.SaveChangesAsync()) > 0;
             if (updated)

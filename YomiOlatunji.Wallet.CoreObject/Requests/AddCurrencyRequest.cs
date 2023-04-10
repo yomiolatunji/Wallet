@@ -6,6 +6,6 @@
 
         public string Symbol { get; set; } = null!;
 
-        public byte[]? CurrencyLogo { get; set; }
+        public string? CurrencyLogoBase64 { get; set; }
     }
 }

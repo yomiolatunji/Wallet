@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using YomiOlatunji.Wallet.BusinessCore.DbModels;
+using YomiOlatunji.Wallet.BusinessCore.Integrations.Interfaces;
 using YomiOlatunji.Wallet.BusinessCore.Services;
 using YomiOlatunji.Wallet.BusinessCore.Services.Interfaces;
 
@@ -16,6 +17,8 @@ namespace YomiOlatunji.Wallet.BusinessCore
             services.AddScoped<ITransactionService, TransactionService>();
             services.AddScoped<ICurrencyService, CurrencyService>();
             services.AddScoped<INotificationService, NotificationService>();
+
+            services.AddScoped<ICloudinaryIntegration, CloudinaryIntegration>();
 
             return services;
         }
