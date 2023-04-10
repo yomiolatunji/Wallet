@@ -3,10 +3,10 @@ using Hangfire.SqlServer;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Text;
 using YomiOlatunji.Wallet.BusinessCore;
 using YomiOlatunji.Wallet.BusinessCore.Services;
 using YomiOlatunji.Wallet.CoreObject.ViewModels;
-using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 

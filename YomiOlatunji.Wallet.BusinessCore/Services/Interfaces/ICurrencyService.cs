@@ -5,9 +5,8 @@ namespace YomiOlatunji.Wallet.BusinessCore.Services.Interfaces
 {
     public interface ICurrencyService
     {
-
         Task<(bool status, string message)> Add(AddCurrencyRequest request);
-        IEnumerable<CurrencyDto> GetCurrencies();
 
+        IEnumerable<CurrencyDto> GetCurrencies();
     }
 }

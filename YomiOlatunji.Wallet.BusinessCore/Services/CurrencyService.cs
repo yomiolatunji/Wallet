@@ -14,6 +14,7 @@ namespace YomiOlatunji.Wallet.BusinessCore.Services
         private readonly WalletContext _context;
         private readonly ICloudinaryIntegration _cloudinaryIntegration;
         private readonly IMapper _mapper;
+
         public CurrencyService(WalletContext context, ICloudinaryIntegration cloudinaryIntegration, IMapper mapper, IConfiguration configuration) : base(configuration)
         {
             _context = context;

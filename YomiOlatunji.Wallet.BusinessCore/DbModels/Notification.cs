@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace YomiOlatunji.Wallet.BusinessCore.DbModels;
+﻿namespace YomiOlatunji.Wallet.BusinessCore.DbModels;
 
 public partial class Notification
 {

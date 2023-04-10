@@ -48,6 +48,7 @@ namespace YomiOlatunji.Wallet.WebApi.Controllers
             var response = saved.status ? ApiResponse<bool>.Success(true) : ApiResponse<bool>.Failed(false);
             return Ok(response);
         }
+
         [HttpPost("user/activate")]
         [ProducesResponseType(typeof(ApiResponse<bool>), StatusCodes.Status200OK)]
         public async Task<ActionResult> ActivateUser([FromBody] long userId)
@@ -61,6 +62,7 @@ namespace YomiOlatunji.Wallet.WebApi.Controllers
             var response = saved.status ? ApiResponse<bool>.Success(true) : ApiResponse<bool>.Failed(false);
             return Ok(response);
         }
+
         [HttpPost("user/deactivate")]
         [ProducesResponseType(typeof(ApiResponse<bool>), StatusCodes.Status200OK)]
         public async Task<ActionResult> DeactivateUser([FromBody] long userId)

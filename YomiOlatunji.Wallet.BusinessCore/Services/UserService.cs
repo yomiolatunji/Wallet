@@ -2,15 +2,15 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using YomiOlatunji.Wallet.BusinessCore.DbModels;
-using YomiOlatunji.Wallet.BusinessCore.Services.Interfaces;
-using YomiOlatunji.Wallet.CoreObject.Enumerables;
-using YomiOlatunji.Wallet.CoreObject.ViewModels;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using YomiOlatunji.Wallet.CoreObject.Requests;
+using YomiOlatunji.Wallet.BusinessCore.DbModels;
 using YomiOlatunji.Wallet.BusinessCore.Integrations.Interfaces;
+using YomiOlatunji.Wallet.BusinessCore.Services.Interfaces;
+using YomiOlatunji.Wallet.CoreObject.Enumerables;
+using YomiOlatunji.Wallet.CoreObject.Requests;
+using YomiOlatunji.Wallet.CoreObject.ViewModels;
 
 namespace YomiOlatunji.Wallet.BusinessCore.Services
 {
@@ -21,7 +21,7 @@ namespace YomiOlatunji.Wallet.BusinessCore.Services
         private readonly ICloudinaryIntegration _cloudinaryIntegration;
         private readonly IWalletService _walletService;
 
-        public UserService(WalletContext context, IMapper mapper,ICloudinaryIntegration cloudinaryIntegration, IWalletService walletService, IConfiguration configuration) : base(configuration)
+        public UserService(WalletContext context, IMapper mapper, ICloudinaryIntegration cloudinaryIntegration, IWalletService walletService, IConfiguration configuration) : base(configuration)
         {
             _context = context;
             _mapper = mapper;
@@ -113,8 +113,8 @@ namespace YomiOlatunji.Wallet.BusinessCore.Services
                 user.LastName = request.LastName;
             }
             user.DateUpdated = DateTime.Now;
-            if(!string.IsNullOrWhiteSpace(request.ProfilePictureBase64))
-            user.ProfilePictureUrl = _cloudinaryIntegration.UploadImage(request.ProfilePictureBase64);
+            if (!string.IsNullOrWhiteSpace(request.ProfilePictureBase64))
+                user.ProfilePictureUrl = _cloudinaryIntegration.UploadImage(request.ProfilePictureBase64);
 
             var updated = (await _context.SaveChangesAsync()) > 0;
             if (updated)
@@ -226,7 +226,7 @@ namespace YomiOlatunji.Wallet.BusinessCore.Services
 
         public async Task<(bool status, string message)> AddAdmin(AddAdminRequest request)
         {
-            return await CreateAdmin(request,UserRoles.Admin);
+            return await CreateAdmin(request, UserRoles.Admin);
         }
 
         public async Task<(bool status, string message)> AddSuperAdmin(AddAdminRequest request)
@@ -246,7 +246,7 @@ namespace YomiOlatunji.Wallet.BusinessCore.Services
             adminRequest.CreatedBy = 0;
             adminRequest.IsDeleted = false;
             adminRequest.Password = PasswordService.HashPassword(request.Password);
-            
+
             await _context.Admins.AddAsync(adminRequest);
             var inserted = (await _context.SaveChangesAsync()) > 0;
             if (inserted)
@@ -258,7 +258,7 @@ namespace YomiOlatunji.Wallet.BusinessCore.Services
 
         public async Task<(bool status, string message)> ActivateUser(long userId)
         {
-            if (userId >0)
+            if (userId > 0)
             {
                 throw new ArgumentNullException(nameof(userId));
             }
@@ -267,7 +267,7 @@ namespace YomiOlatunji.Wallet.BusinessCore.Services
             {
                 return (false, ResponseCodes.NotFound.message);
             }
-           
+
             user.IsActive = true;
             user.DateUpdated = DateTime.Now;
 

@@ -18,15 +18,17 @@ namespace YomiOlatunji.Wallet.WebApi.Controllers
         {
             _currencyService = currencyService;
         }
+
         [HttpGet(Name = "GetCurrencies")]
         [ProducesResponseType(typeof(ApiResponse<IEnumerable<CurrencyDto>>), StatusCodes.Status200OK)]
         public ActionResult<ApiResponse<IEnumerable<CurrencyDto>>> Get()
         {
             var currencies = _currencyService.GetCurrencies();
-            var response = currencies != null ? ApiResponse<IEnumerable<CurrencyDto>>.Success(currencies) 
+            var response = currencies != null ? ApiResponse<IEnumerable<CurrencyDto>>.Success(currencies)
                 : ApiResponse<IEnumerable<CurrencyDto>>.Failed(currencies);
             return Ok(response);
         }
+
         [Authorize(Roles = UserRoles.Admin)]
         [HttpPost]
         [ProducesResponseType(typeof(ApiResponse<bool>), StatusCodes.Status200OK)]

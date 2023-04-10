@@ -16,7 +16,6 @@ namespace YomiOlatunji.Wallet.BusinessCore.Mappings
                 .ReverseMap();
             CreateMap<EditUserRequest, User>()
                 .ReverseMap();
-
         }
     }
 }

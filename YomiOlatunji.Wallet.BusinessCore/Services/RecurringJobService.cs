@@ -12,6 +12,7 @@ namespace YomiOlatunji.Wallet.BusinessCore.Services
             RecurringJob.AddOrUpdate("AccruedInterestJob", () => ComputeInterest(serviceProvider), Cron.Daily(2, 0));
             RecurringJob.AddOrUpdate("PayInterestJob", () => PayInterest(serviceProvider), Cron.Monthly(1, 1, 0));
         }
+
         public static void ComputeInterest(IServiceProvider serviceProvider)
         {
             using (var serviceScope = serviceProvider.CreateScope())
@@ -71,6 +72,7 @@ The interest accrual job has successfully run for the {DateTime.Today.AddDays(-1
                 context.SaveChanges();
             }
         }
+
         public static void PayInterest(IServiceProvider serviceProvider)
         {
             using (var serviceScope = serviceProvider.CreateScope())

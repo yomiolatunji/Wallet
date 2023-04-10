@@ -2,8 +2,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using System.Security.Claims;
-using YomiOlatunji.Wallet.BusinessCore.Services;
 using YomiOlatunji.Wallet.BusinessCore.Services.Interfaces;
 using YomiOlatunji.Wallet.CoreObject.Enumerables;
 using YomiOlatunji.Wallet.CoreObject.Requests;
@@ -20,11 +18,12 @@ namespace YomiOlatunji.Wallet.Api.Controllers
         private readonly INotificationService _notificationService;
         private readonly IMapper _mapper;
 
-        public NotificationController(INotificationService notificationService,IMapper mapper)
+        public NotificationController(INotificationService notificationService, IMapper mapper)
         {
             _notificationService = notificationService;
             _mapper = mapper;
         }
+
         [HttpGet(Name = "GetNotifications")]
         [ProducesResponseType(typeof(PagedApiResponse<NotificationDto>), StatusCodes.Status200OK)]
         public ActionResult<PagedApiResponse<NotificationDto>> Get([FromQuery] PagedRequest request)
@@ -72,6 +71,7 @@ namespace YomiOlatunji.Wallet.Api.Controllers
             }
             return Ok(response);
         }
+
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(ApiResponse<NotificationDto>), StatusCodes.Status200OK)]
         public ActionResult<ApiResponse<NotificationDto>> Get(long id)
@@ -81,6 +81,7 @@ namespace YomiOlatunji.Wallet.Api.Controllers
                 : ApiResponse<NotificationDto>.Failed(notification);
             return Ok(response);
         }
+
         private string? CreateNotificationResourceUri(
             PagedRequest request,
             ResourceUriType type,

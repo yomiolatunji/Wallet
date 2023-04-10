@@ -87,7 +87,7 @@ public partial class WalletContext : DbContext
         }
     }
 
-    partial void OnModelCreatingPartial(ModelBuilder modelBuilder)
+    private partial void OnModelCreatingPartial(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
 

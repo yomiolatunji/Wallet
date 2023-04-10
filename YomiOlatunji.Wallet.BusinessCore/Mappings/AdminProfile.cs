@@ -15,7 +15,7 @@ namespace YomiOlatunji.Wallet.BusinessCore.Mappings
                 .ReverseMap();
             CreateMap<AddAdminRequest, Admin>()
                 .ReverseMap();
-            
+
             CreateMap<Currency, CurrencyDto>()
                 .ReverseMap();
             CreateMap<AddCurrencyRequest, Currency>()
@@ -25,7 +25,6 @@ namespace YomiOlatunji.Wallet.BusinessCore.Mappings
                 .ReverseMap();
             CreateMap<UserPagedRequest, PagedRequest>()
                 .ReverseMap();
-
         }
     }
 }

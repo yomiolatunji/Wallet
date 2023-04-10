@@ -6,6 +6,7 @@ namespace YomiOlatunji.Wallet.BusinessCore.Services.Interfaces
     public interface INotificationService
     {
         PagedList<NotificationDto> GetNotifications(UserPagedRequest request);
+
         NotificationDto GetNotification(long id);
     }
 }

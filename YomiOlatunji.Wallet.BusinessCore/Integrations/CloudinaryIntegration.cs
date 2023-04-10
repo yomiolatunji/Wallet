@@ -1,5 +1,5 @@
-﻿using CloudinaryDotNet.Actions;
-using CloudinaryDotNet;
+﻿using CloudinaryDotNet;
+using CloudinaryDotNet.Actions;
 using Microsoft.Extensions.Configuration;
 using YomiOlatunji.Wallet.BusinessCore.Integrations.Interfaces;
 using YomiOlatunji.Wallet.BusinessCore.Services;
@@ -11,6 +11,7 @@ namespace YomiOlatunji.Wallet.BusinessCore.Integrations
         public CloudinaryIntegration(IConfiguration configuration) : base(configuration)
         {
         }
+
         public string UploadImage(string base64)
         {
             var cloudName = GetAppSetting("Cloudinary:CloudName");

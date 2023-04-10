@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using YomiOlatunji.Wallet.BusinessCore.DbModels;
 using YomiOlatunji.Wallet.BusinessCore.Services.Interfaces;
@@ -12,6 +11,7 @@ namespace YomiOlatunji.Wallet.BusinessCore.Services
     {
         private readonly WalletContext _context;
         private readonly IMapper _mapper;
+
         public NotificationService(WalletContext context, IMapper mapper, IConfiguration configuration) : base(configuration)
         {
             _context = context;
