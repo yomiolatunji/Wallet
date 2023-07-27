@@ -1,5 +1,35 @@
 
-# YomiOlatunji.Wallet
+# Wallet
+##Application Overview
+Wallet is a models wallet solution. Wallet is an innovative and feature-rich Web API application designed to provide a comprehensive and secure digital wallet solution. Built on the robust foundation of C# and .NET Core 3.1, Wallet empowers users to manage their finances efficiently while ensuring utmost privacy and user experience.
+
+###Key Features:
+
+1. **User-Centric Experience:** Wallet prioritizes user convenience by enabling easy sign-up with essential details like email, first name, last name, and password. Users can upload a profile picture during registration or add it later, fostering a personalized experience.
+
+2. **Multi-Currency Wallet:** Upon registration, Wallet automatically creates USD, GBP, and NGN wallets for each user. Users can also add more currency types to their wallets, supporting seamless financial management across diverse currencies.
+
+3. **Fund Management:** Wallet allows users to effortlessly fund their wallets with any desired amount. A straightforward withdrawal process ensures swift and secure access to funds whenever required.
+
+4. **Transaction Tracking:** Users can view their wallet balances and transactions in real-time. Advanced filtering options enable easy sorting of transactions based on day, week, month, or year, enhancing financial oversight.
+
+5. **Admin Privileges:** Admin users enjoy powerful functionalities, including viewing all users and their wallet details, activating or deactivating users, and accessing platform-wide transaction history with various filtering options.
+
+6. **Super Admin Authority:** The designated super admin has the unique ability to create new admin users and assign role-based permissions, ensuring efficient platform management.
+
+7. **Currency Management:** Admins can create and update currency types while attaching their respective currency logos. This feature enhances the system's adaptability to support new currencies seamlessly.
+
+8. **Interest Calculation Service:** Wallet offers an automated service that runs daily to calculate earned interest (Simple Interest at 3.75% per annum) on wallet balances. The system applies the interest to user wallets, ensuring financial growth.
+
+9. **File Storage and Validation:** Wallet includes efficient file storage for profile pictures and currency logos, with robust validation mechanisms for file size and types.
+
+10. **Notifications:** The application provides a flexible notification system to keep users and admins informed about significant events, such as interest calculation completion.
+
+###Tech Stack:
+
+- C# / .NET Core 3.1
+- MS SQL Server
+- Entity Framework Core
 
 ## SYSTEM ARCHITECTURE
 
