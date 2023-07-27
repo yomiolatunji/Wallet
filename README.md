@@ -1,9 +1,9 @@
 
 # Wallet
-##Application Overview
+## Application Overview
 Wallet is a models wallet solution. Wallet is an innovative and feature-rich Web API application designed to provide a comprehensive and secure digital wallet solution. Built on the robust foundation of C# and .NET Core 3.1, Wallet empowers users to manage their finances efficiently while ensuring utmost privacy and user experience.
 
-###Key Features:
+### Key Features:
 
 1. **User-Centric Experience:** Wallet prioritizes user convenience by enabling easy sign-up with essential details like email, first name, last name, and password. Users can upload a profile picture during registration or add it later, fostering a personalized experience.
 
@@ -25,7 +25,7 @@ Wallet is a models wallet solution. Wallet is an innovative and feature-rich Web
 
 10. **Notifications:** The application provides a flexible notification system to keep users and admins informed about significant events, such as interest calculation completion.
 
-###Tech Stack:
+### Tech Stack:
 
 - C# / .NET Core 3.1
 - MS SQL Server
